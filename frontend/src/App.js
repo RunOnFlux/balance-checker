@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 
 export default function App() {
   const [data, setData] = useState(null);
+  const [explorers, setExplorers] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); 
   
@@ -14,7 +15,7 @@ export default function App() {
     const getData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:9650/api/data`
+          `http://localhost:9661/api/data`
         );
         if (!response.ok) {
           throw new Error(
@@ -22,7 +23,8 @@ export default function App() {
           );
         }
         let actualData = await response.json();
-        setData(actualData.data);
+        setData(actualData.data.balances);
+        setExplorers(actualData.data.explorers);
         setError(null);
       } catch(err) {
         setError(err.message);
@@ -35,20 +37,147 @@ export default function App() {
   
   }, [])
 
-
   return (
     <div className="App">
-      <h1>API Posts</h1>
+      <h1>Balance Checker</h1>
       {loading && <div>A moment please...</div>}
       {error && (
         <div>{`There is a problem fetching the post data - ${error}`}</div>
       )}
-        {data &&
-          data.map(({ coin, label, address, balance }) => (
-            <h3>{coin} - {label} - {address} - {balance}</h3>
-          ))
-        }
-
+      <div class="wrapper">
+        <div>
+          <h2>Flux Balances</h2>
+          <table class="center">
+            <tr>
+              <th>Label</th>
+              <th>Address</th>
+              <th>Balance</th>
+            </tr>
+            {data && data.map(({coin, label, address, ALERT, balance}, key) => {
+              if (coin === 'FLUX') {
+                var alert = balance < ALERT;
+                if (ALERT === 0 ) {
+                  alert = false;
+                }
+                var link = `${explorers[coin]}${address}`;
+                return (
+                  <tr key={key}>
+                    <td bgcolor={alert ? 'red' : ''}>{label}</td>
+                    <td bgcolor={alert ? 'red' : ''}><a href={link}>{address}</a></td>
+                    <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                  </tr>
+                )
+              }
+            })}
+          </table>
+        </div>
+        <div>
+          <h2>BSC Balances</h2>
+          <table class="center">
+            <tr>
+              <th>Label</th>
+              <th>Address</th>
+              <th>Balance</th>
+            </tr>
+            {data && data.map(({coin, label, address, ALERT, balance}, key) => {
+              if (coin === 'BSC') {
+                var alert = balance < ALERT;
+                if (ALERT === 0 ) {
+                  alert = false;
+                }
+                var link = `${explorers[coin]}${address}`;
+                return (
+                  <tr key={key}>
+                    <td bgcolor={alert ? 'red' : ''}>{label}</td>
+                    <td bgcolor={alert ? 'red' : ''}><a href={link}>{address}</a></td>
+                    <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                  </tr>
+                )
+              }
+            })}
+          </table>
+        </div>
+      <div>
+        <h2>ETH Balances</h2>
+        <table class="center">
+          <tr>
+            <th>Label</th>
+            <th>Address</th>
+            <th>Balance</th>
+          </tr>
+          {data && data.map(({coin, label, address, ALERT, balance}, key) => {
+            if (coin === 'ETH') {
+              var alert = balance < ALERT;
+                if (ALERT === 0 ) {
+                  alert = false;
+                }
+                var link = `${explorers[coin]}${address}`;
+                return (
+                  <tr key={key}>
+                    <td bgcolor={alert ? 'red' : ''}>{label}</td>
+                    <td bgcolor={alert ? 'red' : ''}><a href={link}>{address}</a></td>
+                    <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                  </tr>
+                )
+            } else {
+              return;
+            }
+          })}
+        </table>
+      </div>
+      <div>
+        <h2>TRON Balances</h2>
+        <table class="center">
+          <tr>
+            <th>Label</th>
+            <th>Address</th>
+            <th>Balance</th>
+          </tr>
+          {data && data.map(({coin, label, address, ALERT, balance}, key) => {
+            if (coin === 'TRON'){
+              var alert = balance < ALERT;
+              if (ALERT === 0 ) {
+                alert = false;
+              }
+              var link = `${explorers[coin]}${address}`;
+                return (
+                  <tr key={key}>
+                    <td bgcolor={alert ? 'red' : ''}>{label}</td>
+                    <td bgcolor={alert ? 'red' : ''}><a href={link}>{address}</a></td>
+                    <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                  </tr>
+                )
+            }
+          })}
+        </table>
+      </div>
+      <div>
+        <h2>SOL Balances</h2>
+        <table class="center">
+          <tr>
+            <th>Label</th>
+            <th>Address</th>
+            <th>Balance</th>
+          </tr>
+          {data && data.map(({coin, label, address, ALERT, balance}, key) => {
+            if (coin === 'SOL'){
+              var alert = balance < ALERT;
+              if (ALERT === 0 ) {
+                alert = false;
+              }
+              var link = `${explorers[coin]}${address}`;
+              return (
+                <tr key={key}>
+                  <td bgcolor={alert ? 'red' : ''}>{label}</td>
+                  <td bgcolor={alert ? 'red' : ''}><a href={link}>{address}</a></td>
+                  <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                </tr>
+              )
+            }
+          })}
+        </table>
+      </div>
+      </div>
     </div>
   );
 }
