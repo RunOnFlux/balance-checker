@@ -59,7 +59,7 @@ const headers = {
 
 router.get("/test", (req, res) => res.json({ msg: "backend works asfds asdfasdfafsd" }));
 
-router.get("/data", (req, res) => res.json({ data: fluxBalances }));
+router.get("/data", (req, res) => res.json({ data: { "balances": balances, "explorers": explorers } }));
 
 module.exports = router;
 
@@ -144,7 +144,7 @@ function parseResponse(item, response) {
 
 var requestLoop = setInterval(function(){
     fetchBalances();
-  }, 1000*60*30);
+  }, 1000*60*5);
 
 // var printLoop = setInterval(function(){
 //     console.log(balances);
@@ -152,7 +152,7 @@ var requestLoop = setInterval(function(){
 
 var hookLoop = setInterval(function(){
     checkHooks();
-}, 1000*60*60);
+}, 1000*60*6);
 
 fetchBalances();
 

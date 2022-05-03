@@ -34,4 +34,4 @@ app.use("/api", rpcMethods);
 
 const port = process.env.PORT || 4444
 
-server = app.listen(port, "localhost", () => console.log(`Server running on port ${port}`));
+server = app.listen(port, "0.0.0.0", () => console.log(`Server running on port ${port}`));
