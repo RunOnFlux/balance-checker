@@ -39,9 +39,9 @@ const addresses = [
     { "coin": "BSC", "label": "SWAP", "address": '0x9b192227da99b5a50d037b10c965609ed83c43d7', "ALERT": 0.01},
     { "coin": "BSC", "label": "COLD", "address": '0x5b79692e093c70e47070f525b593cc35b5adf530', "ALERT": 0},
 
-    { "coin": "ETH", "label": "SNAPSHOT", "address": '0x5a2387883bc5e875e09d533eef812b2da30f2615', "ALERT": 0.01},
-    { "coin": "ETH", "label": "MINING", "address": '0x342c34702929849b6deaa47496d211cbe4167fa5', "ALERT": 0.01},
-    { "coin": "ETH", "label": "SWAP", "address": '0x134e4c74c670adefdcb2476df6960d9297bc7dad', "ALERT": 0.01},
+    { "coin": "ETH", "label": "SNAPSHOT", "address": '0x5a2387883bc5e875e09d533eef812b2da30f2615', "ALERT": 0.1},
+    { "coin": "ETH", "label": "MINING", "address": '0x342c34702929849b6deaa47496d211cbe4167fa5', "ALERT": 0.1},
+    { "coin": "ETH", "label": "SWAP", "address": '0x134e4c74c670adefdcb2476df6960d9297bc7dad', "ALERT": 0.1},
     { "coin": "ETH", "label": "COLD", "address": '0xa23702e9349fbf9939864da1245f5b358e7ef30b', "ALERT": 0},
 
     { "coin": "TRON", "label": "SNAPSHOT", "address": 'TSHXNnsrKGf6KAfosq5mckCnaY7gUfGwBJ', "ALERT": 100},
@@ -143,7 +143,7 @@ function parseResponse(item, response) {
 }
 
 var requestLoop = setInterval(function(){
-    fetchFluxBalances();
+    fetchBalances();
   }, 1000*60*30);
 
 // var printLoop = setInterval(function(){
