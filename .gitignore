@@ -1,2 +1,9 @@
-.env
+.DS_Store
 node_modules/
+package-lock.json
+yarn.lock
+
+error.log
+warn.log
+debug.log
+info.log
