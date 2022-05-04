@@ -33,7 +33,7 @@ function buildApiCall(coin, address) {
 
 function parseResponse(item, response) {
   let balance = 0;
-  console.log(response);
+  // console.log(response);
   if (item.coin === 'FLUX') {
     balance = response.balance;
   } else if (item.coin === 'SOL') {

@@ -7,3 +7,5 @@ error.log
 warn.log
 debug.log
 info.log
+
+.env

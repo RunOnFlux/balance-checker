@@ -12,6 +12,7 @@ module.exports = {
   fetchDelay: 5100, // in case of missing api key
   bscApiKey: '',
   ethApiKey: '',
+  discordHook: '',
   addresses: [
     {
       coin: 'FLUX', label: 'SNAPSHOT', address: 't1UwmAPJ1kv1qy6hV93nL5d5pQezBL55TgN', ALERT: 0,

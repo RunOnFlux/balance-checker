@@ -1,6 +1,10 @@
 const { Webhook } = require('discord-webhook-node');
+const dotenv = require('dotenv');
+const config = require('config');
 
-const hook = new Webhook(`${process.env.WEB_HOOK}`);
+dotenv.config();
+
+const hook = new Webhook(`${process.env.WEB_HOOK || config.discordHook}`);
 
 const IMAGE_URL = 'https://homepages.cae.wisc.edu/~ece533/images/airplane.png';
 hook.setUsername('Discord Webhook Balance Bot Test');
@@ -23,6 +27,8 @@ function checkHook(item, explorer) {
   }
 }
 
-// hook.send('Testing discord send. Sorry');
+function testHook() {
+  hook.send('Test Message, TEST AGAIN');
+}
 
-module.exports = { checkHook };
+module.exports = { checkHook, testHook };
