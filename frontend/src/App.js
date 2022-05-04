@@ -15,7 +15,7 @@ export default function App() {
     const getData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:9661/api/data`
+          'http://164.92.144.155:9661/api/data'
         );
         if (!response.ok) {
           throw new Error(
