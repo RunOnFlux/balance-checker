@@ -1,6 +1,4 @@
-import logo from './logo.svg';
 import './App.css';
-import axios from "axios";
 
 import React, { useState, useEffect } from "react";
 
@@ -53,7 +51,7 @@ export default function App() {
               <th>Address</th>
               <th>Balance</th>
             </tr>
-            {data && data.map(({coin, label, address, ALERT, balance}, key) => {
+            {data && Object.values(data).map(({coin, label, address, ALERT, balance}, key) => {
               if (coin === 'FLUX') {
                 var alert = balance < ALERT;
                 if (ALERT === 0 ) {
@@ -68,6 +66,7 @@ export default function App() {
                   </tr>
                 )
               }
+              return null;
             })}
           </table>
         </div>
@@ -79,7 +78,7 @@ export default function App() {
               <th>Address</th>
               <th>Balance</th>
             </tr>
-            {data && data.map(({coin, label, address, ALERT, balance}, key) => {
+            {data && Object.values(data).map(({coin, label, address, ALERT, balance}, key) => {
               if (coin === 'BSC') {
                 var alert = balance < ALERT;
                 if (ALERT === 0 ) {
@@ -94,6 +93,7 @@ export default function App() {
                   </tr>
                 )
               }
+              return null;
             })}
           </table>
         </div>
@@ -105,7 +105,7 @@ export default function App() {
             <th>Address</th>
             <th>Balance</th>
           </tr>
-          {data && data.map(({coin, label, address, ALERT, balance}, key) => {
+          {data && Object.values(data).map(({coin, label, address, ALERT, balance}, key) => {
             if (coin === 'ETH') {
               var alert = balance < ALERT;
                 if (ALERT === 0 ) {
@@ -120,7 +120,7 @@ export default function App() {
                   </tr>
                 )
             } else {
-              return;
+              return null;
             }
           })}
         </table>
@@ -133,7 +133,7 @@ export default function App() {
             <th>Address</th>
             <th>Balance</th>
           </tr>
-          {data && data.map(({coin, label, address, ALERT, balance}, key) => {
+          {data && Object.values(data).map(({coin, label, address, ALERT, balance}, key) => {
             if (coin === 'TRON'){
               var alert = balance < ALERT;
               if (ALERT === 0 ) {
@@ -148,6 +148,7 @@ export default function App() {
                   </tr>
                 )
             }
+            return null;
           })}
         </table>
       </div>
@@ -159,7 +160,7 @@ export default function App() {
             <th>Address</th>
             <th>Balance</th>
           </tr>
-          {data && data.map(({coin, label, address, ALERT, balance}, key) => {
+          {data && Object.values(data).map(({coin, label, address, ALERT, balance}, key) => {
             if (coin === 'SOL'){
               var alert = balance < ALERT;
               if (ALERT === 0 ) {
@@ -174,6 +175,7 @@ export default function App() {
                 </tr>
               )
             }
+            return null;
           })}
         </table>
       </div>
