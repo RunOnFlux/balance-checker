@@ -8,7 +8,7 @@ const hooks = require('../../discord/hooks');
 dotenv.config();
 const { explorers, addresses, fetchDelay } = config;
 
-let balances = [];
+const balances = {};
 
 function delay(ms) {
   return new Promise((resolve) => {
@@ -68,7 +68,11 @@ async function fetchBalances() {
         log.error(error);
       }
     }
-    balances = newBalances;
+
+    // eslint-disable-next-line no-return-assign
+    newBalances.forEach((item) => {
+      balances[item.address] = item;
+    });
   } catch (error) {
     log.error(error);
   }
@@ -76,13 +80,13 @@ async function fetchBalances() {
 
 function checkHooks() {
   addresses.forEach((item) => {
-    const balanceExists = balances.find((b) => b.address === item.address);
+    const balanceExists = item.address in balances;
     if (balanceExists) {
-      hooks.checkHook(balanceExists, explorers[item.coin]);
+      hooks.checkHook(balances[item.address], explorers[item.coin]);
     } else {
       const adjustedItem = item;
       adjustedItem.balance = -1;
-      hooks.checkHook(adjustedItem, explorers[item.coin]);
+      hooks.checkHook(balances[item.address], explorers[item.coin]);
     }
   });
 }

@@ -1,6 +1,7 @@
 const { Webhook } = require('discord-webhook-node');
 const dotenv = require('dotenv');
 const config = require('config');
+const log = require('../src/lib/log');
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ async function sendHook(coin, label, address, balance, alertamount, explorer) {
           \nDeposit ${coin} ASAP
           \n`;
   const value = `${balance} < ${alertamount}\n${explorer}${address}`;
+
+  log.info(`**${coin} Balance Warning** ${title} ${value}`);
   hook.warning(`**${coin} Balance Warning**`, title, value);
 }
 
