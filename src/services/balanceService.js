@@ -9,6 +9,7 @@ dotenv.config();
 const { explorers, addresses, fetchDelay } = config;
 
 const balances = {};
+const history = {};
 
 function delay(ms) {
   return new Promise((resolve) => {
@@ -82,11 +83,11 @@ function checkHooks() {
   addresses.forEach((item) => {
     const balanceExists = item.address in balances;
     if (balanceExists) {
-      hooks.checkHook(balances[item.address], explorers[item.coin]);
+      hooks.checkHook(balances[item.address], explorers[item.coin], history);
     } else {
       const adjustedItem = item;
       adjustedItem.balance = -1;
-      hooks.checkHook(balances[item.address], explorers[item.coin]);
+      hooks.checkHook(balances[item.address], explorers[item.coin], history);
     }
   });
 }

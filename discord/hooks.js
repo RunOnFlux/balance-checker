@@ -22,10 +22,19 @@ async function sendHook(coin, label, address, balance, alertamount, explorer) {
   hook.warning(`**${coin} Balance Warning**`, title, value);
 }
 
-function checkHook(item, explorer) {
+function checkHook(item, explorer, history) {
   if (item.ALERT) {
     if (item.balance < item.ALERT) {
+      const secondsSinceEpoch = Math.round(Date.now() / 1000);
+      if (item.address in history) {
+        if (history[item.address] + 3600 > secondsSinceEpoch) {
+          log.info(`Skipping discord hook, sent for ${item.address} in the last hour`);
+          return;
+        }
+      }
       sendHook(item.coin, item.label, item.address, item.balance, item.ALERT, explorer);
+      // eslint-disable-next-line no-param-reassign
+      history[item.address] = secondsSinceEpoch;
     }
   }
 }
