@@ -28,13 +28,37 @@ function buildApiCall(coin, address) {
     return `https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'TRON') {
     return `https://apilist.tronscan.org/api/account?address=${address}`;
+  } if (coin === 'AVAX') {
+    const postdata = JSON.stringify({
+      jsonrpc: '2.0',
+      method: 'eth_getBalance',
+      params: [
+        `${address}`,
+        'latest',
+      ],
+      id: 1,
+    });
+
+    const avaxconfig = {
+      method: 'post',
+      url: 'https://api.avax.network/ext/bc/C/rpc',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: postdata,
+    };
+
+    return avaxconfig;
   }
   throw new Error('Invalid coin specified');
 }
 
+function hexToDecimal(hex) {
+  return parseInt(hex, 16);
+}
+
 function parseResponse(item, response) {
   let balance = 0;
-  // console.log(response);
   if (item.coin === 'FLUX') {
     balance = response.balance;
   } else if (item.coin === 'SOL') {
@@ -45,6 +69,8 @@ function parseResponse(item, response) {
     balance = Number(response.result) * 10e-19;
   } else if (item.coin === 'TRON') {
     balance = Number(response.balance) * 10e-7;
+  } else if (item.coin === 'AVAX') {
+    balance = Number(hexToDecimal(response.result)) * 10e-19;
   }
   return balance;
 }
@@ -56,13 +82,27 @@ async function fetchBalances() {
     // eslint-disable-next-line no-restricted-syntax
     for (const item of addresses) {
       try {
-        const apiUrl = buildApiCall(item.coin, item.address);
-        // eslint-disable-next-line no-await-in-loop
-        const response = await axios.get(apiUrl);
-        const result = parseResponse(item, response.data);
-        log.info(`${item.coin}, ${item.address}: ${result}`);
-        item.balance = result;
-        newBalances.push(item);
+        const apiconfig = buildApiCall(item.coin, item.address);
+        let result;
+
+        if (item.coin === 'AVAX') {
+          axios(apiconfig).then((response) => {
+            result = parseResponse(item, response.data);
+            log.info(`${item.coin}, ${item.address}: ${result}`);
+            item.balance = result;
+            newBalances.push(item);
+          })
+            .catch((error) => {
+              log.error(error);
+            });
+        } else {
+          // eslint-disable-next-line no-await-in-loop
+          const response = await axios.get(apiconfig);
+          result = parseResponse(item, response.data);
+          log.info(`${item.coin}, ${item.address}: ${result}`);
+          item.balance = result;
+          newBalances.push(item);
+        }
         // eslint-disable-next-line no-await-in-loop
         await delay(fetchDelay);
       } catch (error) {

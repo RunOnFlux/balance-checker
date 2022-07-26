@@ -179,6 +179,33 @@ export default function App() {
           })}
         </table>
       </div>
+      <div>
+        <h2>AVAX Balances</h2>
+        <table class="center">
+          <tr>
+            <th>Label</th>
+            <th>Address</th>
+            <th>Balance</th>
+          </tr>
+          {data && Object.values(data).map(({coin, label, address, ALERT, balance}, key) => {
+            if (coin === 'AVAX'){
+              var alert = balance < ALERT;
+              if (ALERT === 0 ) {
+                alert = false;
+              }
+              var link = `${explorers[coin]}${address}`;
+              return (
+                <tr key={key}>
+                  <td bgcolor={alert ? 'red' : ''}>{label}</td>
+                  <td bgcolor={alert ? 'red' : ''}><a href={link}>{address}</a></td>
+                  <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                </tr>
+              )
+            }
+            return null;
+          })}
+        </table>
+      </div>
       </div>
     </div>
   );

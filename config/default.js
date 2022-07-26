@@ -8,6 +8,7 @@ module.exports = {
     ETH: 'https://etherscan.io/address/',
     BSC: 'https://bscscan.com/address/',
     SOL: 'https://solscan.io/account/',
+    AVAX: 'https://avascan.info/blockchain/c/address/',
   },
   fetchDelay: 5100, // in case of missing api key
   bscApiKey: '',
@@ -73,6 +74,18 @@ module.exports = {
     },
     {
       coin: 'TRON', label: 'COLD', address: 'THV8NGvAwyaL22kkhkXHVhL7JBDyxRs3BZ', ALERT: 0,
+    },
+    {
+      coin: 'AVAX', label: 'SNAPSHOT', address: '0x1F3b258e0ff097FC4E25B827401D10fDeAa71fC5', ALERT: 1,
+    },
+    {
+      coin: 'AVAX', label: 'MINING', address: '0x8967d37E297f6f6ede242d51783917eb07fDE293', ALERT: 1,
+    },
+    {
+      coin: 'AVAX', label: 'SWAP', address: '0xe0d28bc942B7B0b9A513F92a2fCef2bdF0377619', ALERT: 1,
+    },
+    {
+      coin: 'AVAX', label: 'COLD', address: '0xBdB587D89929b3188325643800f8f789Bf72FF53', ALERT: 0,
     },
   ],
 };
