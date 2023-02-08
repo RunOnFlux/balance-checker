@@ -206,8 +206,6 @@ export default function App() {
           })}
         </table>
       </div>
-      </div>
-
       <div>
         <h2>ERGO Balances</h2>
         <table class="center">
@@ -234,6 +232,7 @@ export default function App() {
             return null;
           })}
         </table>
+        </div>
       </div>
     </div>
   );
