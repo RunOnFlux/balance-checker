@@ -89,16 +89,16 @@ module.exports = {
       coin: 'AVAX', label: 'COLD', address: '0xBdB587D89929b3188325643800f8f789Bf72FF53', ALERT: 0,
     },
     {
-      coin: 'ERGO', label: 'SNAPSHOT', address: '9hhRnDa1Hih5TepwqK1Zbb8SGYUbFpqTwE9G78yffudKq59xTa9', ALERT: 1,
+      coin: 'ERGO', label: 'SNAPSHOT', address: '9hhRnDa1Hih5TepwqK1Zbb8SGYUbFpqTwE9G78yffudKq59xTa9', ALERT: 0,
     },
     {
-      coin: 'ERGO', label: 'MINING', address: '9hZ9ygGKcQ9z1oaYQEmNF53aiNQTazhBo9DFC8tQsR47a15ueGw', ALERT: 0,
+      coin: 'ERGO', label: 'MINING', address: '9hZ9ygGKcQ9z1oaYQEmNF53aiNQTazhBo9DFC8tQsR47a15ueGw', ALERT: 2,
     },
     {
-      coin: 'ERGO', label: 'SWAP', address: '9fCKJ7g6ZffHAQb9UQY7S6YLF6dRVejBAXw284XNazkq8XLuZbw', ALERT: 1,
+      coin: 'ERGO', label: 'SWAP', address: '9fCKJ7g6ZffHAQb9UQY7S6YLF6dRVejBAXw284XNazkq8XLuZbw', ALERT: 2,
     },
     {
-      coin: 'ERGO', label: 'COLD', address: '9gtdyNTVfziFsGzH7KNjMcUj4v8MtADx4Z3prg6MWyHCCWz9NJM', ALERT: 0,
+      coin: 'ERGO', label: 'COLD', address: '9gtdyNTVfziFsGzH7KNjMcUj4v8MtADx4Z3prg6MWyHCCWz9NJM', ALERT: 0.5,
     },
   ],
 };
