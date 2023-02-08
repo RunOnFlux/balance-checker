@@ -8,7 +8,7 @@ dotenv.config();
 const hook = new Webhook(`${process.env.WEB_HOOK || config.discordHook}`);
 
 const IMAGE_URL = 'https://homepages.cae.wisc.edu/~ece533/images/airplane.png';
-hook.setUsername('Discord Webhook Balance Bot Test');
+hook.setUsername('Flux Balance Checker');
 hook.setAvatar(IMAGE_URL);
 
 async function sendHook(coin, label, address, balance, alertamount, explorer) {
@@ -27,8 +27,8 @@ function checkHook(item, explorer, history) {
     if (item.balance < item.ALERT) {
       const secondsSinceEpoch = Math.round(Date.now() / 1000);
       if (item.address in history) {
-        if (history[item.address] + 3600 > secondsSinceEpoch) {
-          log.info(`Skipping discord hook, sent for ${item.address} in the last hour`);
+        if (history[item.address] + 21600 > secondsSinceEpoch) {
+          log.info(`Skipping discord hook, sent for ${item.address} in the last six hours`);
           return;
         }
       }

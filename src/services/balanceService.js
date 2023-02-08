@@ -28,6 +28,8 @@ function buildApiCall(coin, address) {
     return `https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'TRON') {
     return `https://apilist.tronscan.org/api/account?address=${address}`;
+  } if (coin === 'ERGO') {
+    return `https://api.ergoplatform.com/api/v1/addresses/${address}/balance/total`;
   } if (coin === 'AVAX') {
     const postdata = JSON.stringify({
       jsonrpc: '2.0',
@@ -71,6 +73,8 @@ function parseResponse(item, response) {
     balance = Number(response.balance) * 10e-7;
   } else if (item.coin === 'AVAX') {
     balance = Number(hexToDecimal(response.result)) * 10e-19;
+  } else if (item.coin === 'ERGO') {
+    balance = Number(response.confirmed.nanoErgs) * 10e-10;
   }
   return balance;
 }
