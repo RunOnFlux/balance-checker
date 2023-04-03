@@ -51,17 +51,21 @@ export default function App() {
               <th>Address</th>
               <th>Balance</th>
             </tr>
-            {data && Object.values(data).map(({coin, label, address, ALERT, balance}, key) => {
+            {data && Object.values(data).map(({coin, label, address, ALERT, TOKENALERT, balance, tokenBalance}, key) => {
               if (coin === 'FLUX') {
                 var alert = balance < ALERT;
                 if (ALERT === 0 ) {
                   alert = false;
                 }
+                var tokenalert = tokenBalance < TOKENALERT;
+                if (TOKENALERT === 0 ) {
+                  tokenalert = false;
+                }
                 var link = `${explorers[coin]}${address}`;
                 return (
                   <tr key={key}>
-                    <td bgcolor={alert ? 'red' : ''}>{label}</td>
-                    <td bgcolor={alert ? 'red' : ''}><a href={link}>{address}</a></td>
+                    <td bgcolor={alert || tokenalert ? 'red' : ''}>{label}</td>
+                    <td bgcolor={alert || tokenalert ? 'red' : ''}><a href={link}>{address}</a></td>
                     <td bgcolor={alert ? 'red' : ''}>{balance}</td>
                   </tr>
                 )
@@ -77,19 +81,25 @@ export default function App() {
               <th>Label</th>
               <th>Address</th>
               <th>Balance</th>
+              <th>FLUX-BSC</th>
             </tr>
-            {data && Object.values(data).map(({coin, label, address, ALERT, balance}, key) => {
+            {data && Object.values(data).map(({coin, label, address, ALERT, TOKENALERT, balance, tokenBalance}, key) => {
               if (coin === 'BSC') {
                 var alert = balance < ALERT;
                 if (ALERT === 0 ) {
                   alert = false;
                 }
+                var tokenalert = tokenBalance < TOKENALERT;
+                if (TOKENALERT === 0 ) {
+                  tokenalert = false;
+                }
                 var link = `${explorers[coin]}${address}`;
                 return (
                   <tr key={key}>
-                    <td bgcolor={alert ? 'red' : ''}>{label}</td>
-                    <td bgcolor={alert ? 'red' : ''}><a href={link}>{address}</a></td>
+                    <td bgcolor={alert || tokenalert ? 'red' : ''}>{label}</td>
+                    <td bgcolor={alert || tokenalert ? 'red' : ''}><a href={link}>{address}</a></td>
                     <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                    <td bgcolor={tokenalert ? 'red' : ''}>{tokenBalance}</td>
                   </tr>
                 )
               }
@@ -104,19 +114,25 @@ export default function App() {
             <th>Label</th>
             <th>Address</th>
             <th>Balance</th>
+            <th>FLUX-ETH</th>
           </tr>
-          {data && Object.values(data).map(({coin, label, address, ALERT, balance}, key) => {
+          {data && Object.values(data).map(({coin, label, address, ALERT, TOKENALERT, balance, tokenBalance}, key) => {
             if (coin === 'ETH') {
               var alert = balance < ALERT;
                 if (ALERT === 0 ) {
                   alert = false;
                 }
+                var tokenalert = tokenBalance < TOKENALERT;
+                if (TOKENALERT === 0 ) {
+                  tokenalert = false;
+                }
                 var link = `${explorers[coin]}${address}`;
                 return (
                   <tr key={key}>
-                    <td bgcolor={alert ? 'red' : ''}>{label}</td>
-                    <td bgcolor={alert ? 'red' : ''}><a href={link}>{address}</a></td>
+                    <td bgcolor={alert || tokenalert ? 'red' : ''}>{label}</td>
+                    <td bgcolor={alert || tokenalert ? 'red' : ''}><a href={link}>{address}</a></td>
                     <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                    <td bgcolor={tokenalert ? 'red' : ''}>{tokenBalance}</td>
                   </tr>
                 )
             } else {
@@ -132,19 +148,25 @@ export default function App() {
             <th>Label</th>
             <th>Address</th>
             <th>Balance</th>
+            <th>FLUX-TRON</th>
           </tr>
-          {data && Object.values(data).map(({coin, label, address, ALERT, balance}, key) => {
+          {data && Object.values(data).map(({coin, label, address, ALERT, TOKENALERT, balance, tokenBalance}, key) => {
             if (coin === 'TRON'){
               var alert = balance < ALERT;
               if (ALERT === 0 ) {
                 alert = false;
               }
+              var tokenalert = tokenBalance < TOKENALERT;
+                if (TOKENALERT === 0 ) {
+                  tokenalert = false;
+                }
               var link = `${explorers[coin]}${address}`;
                 return (
                   <tr key={key}>
-                    <td bgcolor={alert ? 'red' : ''}>{label}</td>
-                    <td bgcolor={alert ? 'red' : ''}><a href={link}>{address}</a></td>
+                    <td bgcolor={alert || tokenalert ? 'red' : ''}>{label}</td>
+                    <td bgcolor={alert || tokenalert ? 'red' : ''}><a href={link}>{address}</a></td>
                     <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                    <td bgcolor={tokenalert ? 'red' : ''}>{tokenBalance}</td>
                   </tr>
                 )
             }
@@ -159,19 +181,25 @@ export default function App() {
             <th>Label</th>
             <th>Address</th>
             <th>Balance</th>
+            <th>FLUX-SOL</th>
           </tr>
-          {data && Object.values(data).map(({coin, label, address, ALERT, balance}, key) => {
+          {data && Object.values(data).map(({coin, label, address, ALERT, TOKENALERT, balance, tokenBalance}, key) => {
             if (coin === 'SOL'){
               var alert = balance < ALERT;
               if (ALERT === 0 ) {
                 alert = false;
               }
+              var tokenalert = tokenBalance < TOKENALERT;
+                if (TOKENALERT === 0 ) {
+                  tokenalert = false;
+                }
               var link = `${explorers[coin]}${address}`;
               return (
                 <tr key={key}>
-                  <td bgcolor={alert ? 'red' : ''}>{label}</td>
-                  <td bgcolor={alert ? 'red' : ''}><a href={link}>{address}</a></td>
-                  <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                  <td bgcolor={alert || tokenalert ? 'red' : ''}>{label}</td>
+                    <td bgcolor={alert || tokenalert ? 'red' : ''}><a href={link}>{address}</a></td>
+                    <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                    <td bgcolor={tokenalert ? 'red' : ''}>{tokenBalance}</td>
                 </tr>
               )
             }
@@ -186,19 +214,25 @@ export default function App() {
             <th>Label</th>
             <th>Address</th>
             <th>Balance</th>
+            <th>FLUX-AVAX</th>
           </tr>
-          {data && Object.values(data).map(({coin, label, address, ALERT, balance}, key) => {
+          {data && Object.values(data).map(({coin, label, address, ALERT, TOKENALERT, balance, tokenBalance}, key) => {
             if (coin === 'AVAX'){
               var alert = balance < ALERT;
               if (ALERT === 0 ) {
                 alert = false;
               }
+              var tokenalert = tokenBalance < TOKENALERT;
+                if (TOKENALERT === 0 ) {
+                  tokenalert = false;
+                }
               var link = `${explorers[coin]}${address}`;
               return (
                 <tr key={key}>
-                  <td bgcolor={alert ? 'red' : ''}>{label}</td>
-                  <td bgcolor={alert ? 'red' : ''}><a href={link}>{address}</a></td>
-                  <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                  <td bgcolor={alert || tokenalert ? 'red' : ''}>{label}</td>
+                    <td bgcolor={alert || tokenalert ? 'red' : ''}><a href={link}>{address}</a></td>
+                    <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                    <td bgcolor={tokenalert ? 'red' : ''}>{tokenBalance}</td>
                 </tr>
               )
             }
@@ -213,19 +247,58 @@ export default function App() {
             <th>Label</th>
             <th>Address</th>
             <th>Balance</th>
+            <th>FLUX-ERGO</th>
           </tr>
-          {data && Object.values(data).map(({coin, label, address, ALERT, balance}, key) => {
+          {data && Object.values(data).map(({coin, label, address, ALERT, TOKENALERT, balance, tokenBalance}, key) => {
             if (coin === 'ERGO'){
               var alert = balance < ALERT;
               if (ALERT === 0 ) {
                 alert = false;
               }
+              var tokenalert = tokenBalance < TOKENALERT;
+              if (TOKENALERT === 0 ) {
+                tokenalert = false;
+              }
               var link = `${explorers[coin]}${address}`;
               return (
                 <tr key={key}>
-                  <td bgcolor={alert ? 'red' : ''}>{label}</td>
-                  <td bgcolor={alert ? 'red' : ''}><a href={link}>{address}</a></td>
+                  <td bgcolor={alert || tokenalert ? 'red' : ''}>{label}</td>
+                  <td bgcolor={alert || tokenalert ? 'red' : ''}><a href={link}>{address}</a></td>
                   <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                  <td bgcolor={tokenalert ? 'red' : ''}>{tokenBalance}</td>
+                </tr>
+              )
+            }
+            return null;
+          })}
+        </table>
+        </div>
+        <div>
+        <h2>KDA Balances</h2>
+        <table class="center">
+          <tr>
+            <th>Label</th>
+            <th>Address</th>
+            <th>Balance</th>
+            <th>FLUX-KDA</th>
+          </tr>
+          {data && Object.values(data).map(({coin, label, address, ALERT, TOKENALERT, balance, tokenBalance}, key) => {
+            if (coin === 'KDA'){
+              var alert = balance < ALERT;
+              if (ALERT === 0 ) {
+                alert = false;
+              }
+              var tokenalert = tokenBalance < TOKENALERT;
+              if (TOKENALERT === 0 ) {
+                tokenalert = false;
+              }
+              var link = `${explorers[coin]}${address}`;
+              return (
+                <tr key={key}>
+                  <td bgcolor={alert || tokenalert ? 'red' : ''}>{label}</td>
+                  <td bgcolor={alert || tokenalert ? 'red' : ''}><a href={link}>{address}</a></td>
+                  <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                  <td bgcolor={tokenalert ? 'red' : ''}>{tokenBalance}</td>
                 </tr>
               )
             }
