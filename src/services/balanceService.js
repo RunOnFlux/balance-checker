@@ -18,46 +18,17 @@ function delay(ms) {
 }
 
 function search(nameKey, object) {
-  return object.find((o) => o.tokenAddress === nameKey || o.tokenId === nameKey || o.address === nameKey);
+  // ALGO Key Word
+  const algoKeyWord = 'asset-id';
+
+  return object.find((o) => o.tokenAddress === nameKey || o.tokenId === nameKey || o.address === nameKey || o[algoKeyWord] == nameKey);
 }
 
-function buildApiCall(coin, address, token) {
-  // Flux Tokens (Flux-ETH, Flux-BSC, Flux-SOL, etc)
-  if (token) {
-    if (coin === 'FLUX') {
-      return `https://explorer.runonflux.io/api/addr/${address}`;
-    } if (coin === 'SOL') {
-      const avaxconfig = {
-        method: 'get',
-        url: `https://public-api.solscan.io/account/tokens?account=${address}`,
-        headers: {
-          'Content-Type': 'application/json',
-          token: `${config.solApiKey || process.env.SOL_API_KEY}`,
-        },
-      };
-      return avaxconfig;
-    } if (coin === 'BSC') {
-      return `https://api.bscscan.com/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.BSC}&address=${address}&tag=latest&apikey=${config.bscApiKey || process.env.BSC_API_KEY}`;
-    } if (coin === 'ETH') {
-      return `https://api.etherscan.com/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.ETH}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
-    } if (coin === 'TRON') {
-      return `https://apilist.tronscan.org/api/account?address=${address}`;
-    } if (coin === 'AVAX') {
-      return `https://avascan.info/react-api/network/1/blockchain/all/address/${address}/balance?`;
-    } if (coin === 'ERGO') {
-      return `https://api.ergoplatform.com/api/v1/addresses/${address}/balance/total`;
-    } if (coin === 'KDA') {
-      return `${config.kdaTokenApi || process.env.KDA_TOKEN_API}${address}`;
-    }
-  }
-
-  // Gas Coins (ETH, BNB, AVAX, etc)
-  if (coin === 'FLUX') {
-    return `https://explorer.runonflux.io/api/addr/${address}`;
-  } if (coin === 'SOL') {
+function getTokenBalanceApiCall(coin, address) {
+  if (coin === 'SOL') {
     const avaxconfig = {
       method: 'get',
-      url: `https://public-api.solscan.io/account/${address}`,
+      url: `https://public-api.solscan.io/account/tokens?account=${address}`,
       headers: {
         'Content-Type': 'application/json',
         token: `${config.solApiKey || process.env.SOL_API_KEY}`,
@@ -65,37 +36,69 @@ function buildApiCall(coin, address, token) {
     };
     return avaxconfig;
   } if (coin === 'BSC') {
+    return `https://api.bscscan.com/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.BSC}&address=${address}&tag=latest&apikey=${config.bscApiKey || process.env.BSC_API_KEY}`;
+  } if (coin === 'ETH') {
+    return `https://api.etherscan.com/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.ETH}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
+  } if (coin === 'MATIC') {
+    return `https://api.polygonscan.com/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.MATIC}&address=${address}&tag=latest&apikey=${config.maticApiKey || process.env.MATIC_API_KEY}`;
+  } if (coin === 'AVAX') {
+    return `https://api.snowtrace.io/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.AVAX}&address=${address}&tag=latest&apikey=${config.avaxApiKey || process.env.AVAX_API_KEY}`;
+  } if (coin === 'KDA') {
+    return `${config.kdaTokenApi || process.env.KDA_TOKEN_API}${address}`;
+  }
+  throw new Error('Invalid Token Coin Specified');
+}
+
+function getGasBalanceApiCall(coin, address) {
+  if (coin === 'SOL') {
+    const solconfig = {
+      method: 'get',
+      url: `https://public-api.solscan.io/account/${address}`,
+      headers: {
+        'Content-Type': 'application/json',
+        token: `${config.solApiKey || process.env.SOL_API_KEY}`,
+      },
+    };
+    return solconfig;
+  } if (coin === 'BSC') {
     return `https://api.bscscan.com/api?module=account&action=balance&address=${address}&apikey=${config.bscApiKey || process.env.BSC_API_KEY}`;
   } if (coin === 'ETH') {
     return `https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
-  } if (coin === 'TRON') {
-    return `https://apilist.tronscan.org/api/account?address=${address}`;
-  } if (coin === 'ERGO') {
-    return `https://api.ergoplatform.com/api/v1/addresses/${address}/balance/total`;
+  } if (coin === 'MATIC') {
+    return `https://api.polygonscan.com/api?module=account&action=balance&address=${address}&tag=latest&apikey=${config.maticApiKey || process.env.MATIC_API_KEY}`;
+  } if (coin === 'AVAX') {
+    return `https://api.snowtrace.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${config.avaxApiKey || process.env.AVAX_API_KEY}`;
   } if (coin === 'KDA') {
     return `${config.kdaApi || process.env.KDA_API}${address}`;
-  } if (coin === 'AVAX') {
-    const postdata = JSON.stringify({
-      jsonrpc: '2.0',
-      method: 'eth_getBalance',
-      params: [
-        `${address}`,
-        'latest',
-      ],
-      id: 1,
-    });
-
-    const avaxconfig = {
-      method: 'post',
-      url: 'https://api.avax.network/ext/bc/C/rpc',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: postdata,
-    };
-
-    return avaxconfig;
   }
+  throw new Error('Invalid Gas Coin Specified');
+}
+
+function buildApiCall(coin, address, token) {
+  try {
+    // FLUX, ALGO, TRON, ERGO use the same endpoint no matter if looking for token balance or gas coin balance
+    if (coin === 'FLUX') {
+      return `https://explorer.runonflux.io/api/addr/${address}`;
+    } if (coin === 'ALGO') {
+      return `https://mainnet-api.algonode.cloud/v2/accounts/${address}`;
+    } if (coin === 'TRON') {
+      return `https://apilist.tronscan.org/api/account?address=${address}`;
+    } if (coin === 'ERGO') {
+      return `https://api.ergoplatform.com/api/v1/addresses/${address}/balance/total`;
+    }
+
+    // eslint-disable-next-line no-trailing-spaces
+    if (token) {
+      // Flux Tokens (FLUX-ETH, FLUX-BSC, FLUX-SOL, FLUX-AVAX, FLUX-KDA)
+      return getTokenBalanceApiCall(coin, address);
+    }
+
+    // Gas Coins (ETH, BNB, AVAX, etc)
+    return getGasBalanceApiCall(coin, address);
+  } catch (error) {
+    log.error(`Build Api Called Failed with: ${error}`);
+  }
+
   throw new Error('Invalid coin specified');
 }
 
@@ -115,18 +118,24 @@ function parseResponse(item, response, fetchTokens) {
       balance = Number(response.result) * 10e-9;
     } else if (item.coin === 'ETH') {
       balance = Number(response.result) * 10e-9;
+    } else if (item.coin === 'MATIC') {
+      balance = Number(response.result) * 10e-9;
     } else if (item.coin === 'TRON') {
       const obj = search(config.fluxContractAddresses.TRON, response.trc20token_balances);
       balance = Number(obj.balance) * 10e-9;
     } else if (item.coin === 'AVAX') {
-      const obj = search(config.fluxContractAddresses.AVAX, response.tokens);
-      balance = Number(obj.balance);
+      balance = Number(response.result) * 10e-9;
     } else if (item.coin === 'ERGO') {
       const obj = search(config.fluxContractAddresses.ERGO, response.confirmed.tokens);
       balance = Number(obj.amount) * 10e-9;
     } else if (item.coin === 'KDA') {
       if (response.chains) {
         balance = response.chains['0'];
+      }
+    } else if (item.coin === 'ALGO') {
+      if (response.assets) {
+        const obj = search(config.fluxContractAddresses.ALGO, response.assets);
+        balance = Number(obj.amount) * 10e-9;
       }
     }
     return balance;
@@ -140,16 +149,20 @@ function parseResponse(item, response, fetchTokens) {
     balance = Number(response.result) * 10e-19;
   } else if (item.coin === 'ETH') {
     balance = Number(response.result) * 10e-19;
+  } else if (item.coin === 'MATIC') {
+    balance = Number(response.result) * 10e-19;
   } else if (item.coin === 'TRON') {
     balance = Number(response.balance) * 10e-7;
   } else if (item.coin === 'AVAX') {
-    balance = Number(hexToDecimal(response.result)) * 10e-19;
+    balance = Number(response.result) * 10e-19;
   } else if (item.coin === 'ERGO') {
     balance = Number(response.confirmed.nanoErgs) * 10e-10;
   } else if (item.coin === 'KDA') {
     if (response.chains) {
       balance = response.chains['0'];
     }
+  } else if (item.coin === 'ALGO') {
+    balance = Number(response.amount) * 10e-7;
   }
   return balance;
 }

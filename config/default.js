@@ -11,6 +11,8 @@ module.exports = {
     AVAX: 'https://avascan.info/blockchain/c/address/',
     ERGO: 'https://explorer.ergoplatform.com/en/addresses/',
     KDA: 'https://explorer.chainweb.com/mainnet/account/',
+    ALGO: 'https://algoexplorer.io/address/',
+    MATIC: 'https://polygonscan.com/address/',
   },
   fluxContractAddresses: {
     ETH: '0x720CD16b011b987Da3518fbf38c3071d4F0D1495',
@@ -19,11 +21,15 @@ module.exports = {
     TRON: 'TWr6yzukRwZ53HDe3bzcC8RCTbiKa4Zzb6',
     AVAX: '0xc4B06F17ECcB2215a5DBf042C672101Fc20daF55',
     ERGO: 'e8b20745ee9d18817305f32eb21015831a48f02d40980de6e849f886dca7f807',
+    ALGO: '1029804829',
+    MATIC: '0xA2bb7A68c46b53f6BbF6cC91C865Ae247A82E99B',
   },
   fetchDelay: 5100, // in case of missing api key
   bscApiKey: '',
   ethApiKey: '',
   solApiKey: '',
+  maticApiKey: '',
+  avaxApiKey: '',
   discordHook: '',
   kdaApi: '',
   kdaTokenApi: '',
@@ -121,8 +127,23 @@ module.exports = {
     {
       coin: 'KDA', label: 'SWAP', address: 'fluxswap', ALERT: 0.001, TOKENALERT: 1000,
     },
-    // {
-    //   coin: 'KDA', label: 'COLD', address: '9gtdyNTVfziFsGzH7KNjMcUj4v8MtADx4Z3prg6MWyHCCWz9NJM', ALERT: 0.5, TOKENALERT: 1000,
-    // },
+    {
+      coin: 'ALGO', label: 'SNAPSHOT', address: '2XAH2WI7726D5TGNXX7QBPL54PRMT4JUJZCXSAUWBJIBKC455AJ5RPEGAQ', ALERT: 25, TOKENALERT: 1000,
+    },
+    {
+      coin: 'ALGO', label: 'MINING', address: 'RNZZK5ZCVMOYE64EAHCABG6YRXN35SKVAW5EXKJLPZZLAIXC5NCACU22HI', ALERT: 25, TOKENALERT: 1000,
+    },
+    {
+      coin: 'ALGO', label: 'SWAP', address: '5MG5DOGNHGGG44HO7B4JXEORSFFLBNHFNTLYYR6OW53RNNCJK2LVSJVNXA', ALERT: 25, TOKENALERT: 1000,
+    },
+    {
+      coin: 'MATIC', label: 'SNAPSHOT', address: '0x25adf2050244c087fc1a27b870844ab9c1936bdf', ALERT: 2, TOKENALERT: 1000,
+    },
+    {
+      coin: 'MATIC', label: 'MINING', address: '0x208ef66cd865cc9dc862baf2be796a055d973d33', ALERT: 2, TOKENALERT: 1000,
+    },
+    {
+      coin: 'MATIC', label: 'SWAP', address: '0x438ad183665511d41be2c779942f6c7660710be2', ALERT: 2, TOKENALERT: 1000,
+    },
   ],
 };
