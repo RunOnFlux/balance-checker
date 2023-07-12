@@ -38,7 +38,7 @@ function getTokenBalanceApiCall(coin, address) {
   } if (coin === 'BSC') {
     return `https://api.bscscan.com/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.BSC}&address=${address}&tag=latest&apikey=${config.bscApiKey || process.env.BSC_API_KEY}`;
   } if (coin === 'ETH') {
-    return `https://api.etherscan.com/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.ETH}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
+    return `https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.ETH}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'MATIC') {
     return `https://api.polygonscan.com/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.MATIC}&address=${address}&tag=latest&apikey=${config.maticApiKey || process.env.MATIC_API_KEY}`;
   } if (coin === 'AVAX') {

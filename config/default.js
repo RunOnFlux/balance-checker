@@ -24,7 +24,7 @@ module.exports = {
     ALGO: '1029804829',
     MATIC: '0xA2bb7A68c46b53f6BbF6cC91C865Ae247A82E99B',
   },
-  fetchDelay: 5100, // in case of missing api key
+  fetchDelay: 1100, // in case of missing api key
   bscApiKey: '',
   ethApiKey: '',
   solApiKey: '',
