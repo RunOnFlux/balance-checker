@@ -1,6 +1,7 @@
 const config = require('config');
 const axios = require('axios');
 const dotenv = require('dotenv');
+const kadenaPact = require('pact-lang-api');
 
 const log = require('../lib/log');
 const hooks = require('../../discord/hooks');
@@ -21,6 +22,7 @@ function search(nameKey, object) {
   // ALGO Key Word
   const algoKeyWord = 'asset-id';
 
+  // eslint-disable-next-line eqeqeq
   return object.find((o) => o.tokenAddress === nameKey || o.tokenId === nameKey || o.address === nameKey || o[algoKeyWord] == nameKey);
 }
 
@@ -44,7 +46,7 @@ function getTokenBalanceApiCall(coin, address) {
   } if (coin === 'AVAX') {
     return `https://api.snowtrace.io/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.AVAX}&address=${address}&tag=latest&apikey=${config.avaxApiKey || process.env.AVAX_API_KEY}`;
   } if (coin === 'KDA') {
-    return `${config.kdaTokenApi || process.env.KDA_TOKEN_API}${address}`;
+    return 'https://kadena.app.runonflux.io/chainweb/0.0/mainnet01/chain/0/pact';
   }
   throw new Error('Invalid Token Coin Specified');
 }
@@ -69,7 +71,7 @@ function getGasBalanceApiCall(coin, address) {
   } if (coin === 'AVAX') {
     return `https://api.snowtrace.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${config.avaxApiKey || process.env.AVAX_API_KEY}`;
   } if (coin === 'KDA') {
-    return `${config.kdaApi || process.env.KDA_API}${address}`;
+    return 'https://kadena.app.runonflux.io/chainweb/0.0/mainnet01/chain/0/pact';
   }
   throw new Error('Invalid Gas Coin Specified');
 }
@@ -102,6 +104,7 @@ function buildApiCall(coin, address, token) {
   throw new Error('Invalid coin specified');
 }
 
+// eslint-disable-next-line no-unused-vars
 function hexToDecimal(hex) {
   return parseInt(hex, 16);
 }
@@ -178,14 +181,39 @@ async function fetchBalances() {
         let result;
 
         if (item.coin === 'SOL') {
-          axios(apitokenconfig).then((response) => {
-            result = parseResponse(item, response.data, true);
-            log.info(`${item.coin}, ${item.address}: ${result}`);
-            item.tokenBalance = result;
-          })
-            .catch((error) => {
-              log.error(error);
-            });
+          // eslint-disable-next-line no-await-in-loop
+          const response = await axios(apitokenconfig).catch((error) => {
+            log.error(error);
+          });
+          result = parseResponse(item, response.data, true);
+          log.info(`${item.coin}, ${item.address}: ${result}`);
+          item.tokenBalance = result;
+        } else if (item.coin === 'KDA') {
+          const creationTime = () => Math.round(new Date().getTime() / 1000) - 60;
+          // mkMeta takes in account name, chain id, gas price, gas limit, creation time, time-to-live
+          const dumMeta = (chainId) => kadenaPact.lang.mkMeta('dummyaccount', chainId.toString(), 0.00000001, 6000, creationTime(), 900);
+          // eslint-disable-next-line no-await-in-loop
+          const response = await kadenaPact.fetch.local({
+            pactCode: `(runonflux.flux.details "${item.address}")`,
+            keyPairs: kadenaPact.crypto.genKeyPair(),
+            meta: dumMeta('0'),
+          }, apitokenconfig).catch((error) => {
+            log.error(error);
+          });
+          let confirmedBal = 0;
+          if (response.result.data) {
+            if (typeof response.result.data.balance === 'number') {
+              confirmedBal = response.result.data.balance;
+            } else if (response.result.data.balance.decimal) {
+              confirmedBal = response.result.data.balance.decimal;
+            } else {
+              confirmedBal = 0;
+            }
+          } else {
+            confirmedBal = 0;
+          }
+          log.info(`${item.coin}, ${item.address}: ${confirmedBal}`);
+          item.tokenBalance = confirmedBal;
         } else {
           // eslint-disable-next-line no-await-in-loop
           const response = await axios.get(apitokenconfig);
@@ -199,17 +227,44 @@ async function fetchBalances() {
         await delay(fetchDelay);
 
         const apiconfig = buildApiCall(item.coin, item.address, false);
-        if (item.coin === 'AVAX' || item.coin === 'SOL') {
-          axios(apiconfig).then((response) => {
-            result = parseResponse(item, response.data, false);
-            log.info(`${item.coin}, ${item.address}: ${result}`);
-            item.balance = result;
-            newBalances.push(item);
-            balances[item.address] = item;
-          })
-            .catch((error) => {
-              log.error(error);
-            });
+        if (item.coin === 'SOL') {
+          // eslint-disable-next-line no-await-in-loop
+          const response = await axios(apiconfig).catch((error) => {
+            log.error(error);
+          });
+          result = parseResponse(item, response.data, false);
+          log.info(`${item.coin}, ${item.address}: ${result}`);
+          item.balance = result;
+          newBalances.push(item);
+          balances[item.address] = item;
+        } else if (item.coin === 'KDA') {
+          const creationTime = () => Math.round(new Date().getTime() / 1000) - 60;
+          // mkMeta takes in account name, chain id, gas price, gas limit, creation time, time-to-live
+          const dumMeta = (chainId) => kadenaPact.lang.mkMeta('dummyaccount', chainId.toString(), 0.00000001, 6000, creationTime(), 900);
+          // eslint-disable-next-line no-await-in-loop
+          const response = await kadenaPact.fetch.local({
+            pactCode: `(coin.details "${item.address}")`,
+            keyPairs: kadenaPact.crypto.genKeyPair(),
+            meta: dumMeta('0'),
+          }, apiconfig).catch((error) => {
+            log.error(error);
+          });
+          let confirmedBal = 0;
+          if (response.result.data) {
+            if (typeof response.result.data.balance === 'number') {
+              confirmedBal = response.result.data.balance;
+            } else if (response.result.data.balance.decimal) {
+              confirmedBal = response.result.data.balance.decimal;
+            } else {
+              confirmedBal = 0;
+            }
+          } else {
+            confirmedBal = 0;
+          }
+          log.info(`${item.coin}, ${item.address}: ${confirmedBal}`);
+          item.balance = confirmedBal;
+          newBalances.push(item);
+          balances[item.address] = item;
         } else {
           // eslint-disable-next-line no-await-in-loop
           const response = await axios.get(apiconfig);
