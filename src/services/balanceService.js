@@ -46,7 +46,7 @@ function getTokenBalanceApiCall(coin, address) {
   } if (coin === 'AVAX') {
     return `https://api.snowtrace.io/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.AVAX}&address=${address}&tag=latest&apikey=${config.avaxApiKey || process.env.AVAX_API_KEY}`;
   } if (coin === 'KDA') {
-    return 'https://kadena.app.runonflux.io/chainweb/0.0/mainnet01/chain/0/pact';
+    return 'https://kadena.dapp.runonflux.io/chainweb/0.0/mainnet01/chain/0/pact';
   }
   throw new Error('Invalid Token Coin Specified');
 }
@@ -71,7 +71,7 @@ function getGasBalanceApiCall(coin, address) {
   } if (coin === 'AVAX') {
     return `https://api.snowtrace.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${config.avaxApiKey || process.env.AVAX_API_KEY}`;
   } if (coin === 'KDA') {
-    return 'https://kadena.app.runonflux.io/chainweb/0.0/mainnet01/chain/0/pact';
+    return 'https://kadena.dapp.runonflux.io/chainweb/0.0/mainnet01/chain/0/pact';
   }
   throw new Error('Invalid Gas Coin Specified');
 }

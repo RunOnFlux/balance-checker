@@ -128,6 +128,9 @@ module.exports = {
       coin: 'KDA', label: 'SWAP', address: 'fluxswap', ALERT: 0.001, TOKENALERT: 1000,
     },
     {
+      coin: 'KDA', label: 'COLD', address: 'k:869daee30836deb4beb5fefcffb53bcb92d44514670bc721c073065b5832dbfb', ALERT: 0.001, TOKENALERT: 1000,
+    },
+    {
       coin: 'ALGO', label: 'SNAPSHOT', address: '2XAH2WI7726D5TGNXX7QBPL54PRMT4JUJZCXSAUWBJIBKC455AJ5RPEGAQ', ALERT: 25, TOKENALERT: 1000,
     },
     {
@@ -137,6 +140,9 @@ module.exports = {
       coin: 'ALGO', label: 'SWAP', address: '5MG5DOGNHGGG44HO7B4JXEORSFFLBNHFNTLYYR6OW53RNNCJK2LVSJVNXA', ALERT: 25, TOKENALERT: 1000,
     },
     {
+      coin: 'ALGO', label: 'COLD', address: 'X6H5CRS2TLI4M3B4BNVW3DKC6RER7ZGOLJBGDMCUFI5NKJCT4BBSUCXRW4', ALERT: 25, TOKENALERT: 1000,
+    },
+    {
       coin: 'MATIC', label: 'SNAPSHOT', address: '0x25adf2050244c087fc1a27b870844ab9c1936bdf', ALERT: 2, TOKENALERT: 1000,
     },
     {
@@ -144,6 +150,9 @@ module.exports = {
     },
     {
       coin: 'MATIC', label: 'SWAP', address: '0x438ad183665511d41be2c779942f6c7660710be2', ALERT: 2, TOKENALERT: 1000,
+    },
+    {
+      coin: 'MATIC', label: 'COLD', address: '0xee38530d735d485558c454268ffefe7704cc25c0', ALERT: 2, TOKENALERT: 1000,
     },
   ],
 };
