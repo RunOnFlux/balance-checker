@@ -30,7 +30,7 @@ function getTokenBalanceApiCall(coin, address) {
   if (coin === 'SOL') {
     const avaxconfig = {
       method: 'get',
-      url: `https://public-api.solscan.io/account/tokens?account=${address}`,
+      url: `https://pro-api.solscan.io/v1.0/account/tokens?account=${address}`,
       headers: {
         'Content-Type': 'application/json',
         token: `${config.solApiKey || process.env.SOL_API_KEY}`,
@@ -45,8 +45,10 @@ function getTokenBalanceApiCall(coin, address) {
     return `https://api.polygonscan.com/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.MATIC}&address=${address}&tag=latest&apikey=${config.maticApiKey || process.env.MATIC_API_KEY}`;
   } if (coin === 'AVAX') {
     return `https://api.snowtrace.io/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.AVAX}&address=${address}&tag=latest&apikey=${config.avaxApiKey || process.env.AVAX_API_KEY}`;
+  } if (coin === 'BASE') {
+    return `https://api.basescan.org/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.BASE}&address=${address}&tag=latest&apikey=${config.baseApiKey || process.env.BASE_API_KEY}`;
   } if (coin === 'KDA') {
-    return 'https://kadena.dapp.runonflux.io/chainweb/0.0/mainnet01/chain/0/pact';
+    return 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact';
   }
   throw new Error('Invalid Token Coin Specified');
 }
@@ -55,7 +57,7 @@ function getGasBalanceApiCall(coin, address) {
   if (coin === 'SOL') {
     const solconfig = {
       method: 'get',
-      url: `https://public-api.solscan.io/account/${address}`,
+      url: `https://pro-api.solscan.io/v1.0/account/${address}`,
       headers: {
         'Content-Type': 'application/json',
         token: `${config.solApiKey || process.env.SOL_API_KEY}`,
@@ -70,8 +72,10 @@ function getGasBalanceApiCall(coin, address) {
     return `https://api.polygonscan.com/api?module=account&action=balance&address=${address}&tag=latest&apikey=${config.maticApiKey || process.env.MATIC_API_KEY}`;
   } if (coin === 'AVAX') {
     return `https://api.snowtrace.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${config.avaxApiKey || process.env.AVAX_API_KEY}`;
+  } if (coin === 'BASE') {
+    return `https://api.basescan.org/api?module=account&action=balance&address=${address}&tag=latest&apikey=${config.baseApiKey || process.env.BASE_API_KEY}`;
   } if (coin === 'KDA') {
-    return 'https://kadena.dapp.runonflux.io/chainweb/0.0/mainnet01/chain/0/pact';
+    return 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact';
   }
   throw new Error('Invalid Gas Coin Specified');
 }
@@ -123,6 +127,8 @@ function parseResponse(item, response, fetchTokens) {
       balance = Number(response.result) * 10e-9;
     } else if (item.coin === 'MATIC') {
       balance = Number(response.result) * 10e-9;
+    } else if (item.coin === 'BASE') {
+      balance = Number(response.result) * 10e-9;
     } else if (item.coin === 'TRON') {
       const obj = search(config.fluxContractAddresses.TRON, response.trc20token_balances);
       balance = Number(obj.balance) * 10e-9;
@@ -153,6 +159,8 @@ function parseResponse(item, response, fetchTokens) {
   } else if (item.coin === 'ETH') {
     balance = Number(response.result) * 10e-19;
   } else if (item.coin === 'MATIC') {
+    balance = Number(response.result) * 10e-19;
+  } else if (item.coin === 'BASE') {
     balance = Number(response.result) * 10e-19;
   } else if (item.coin === 'TRON') {
     balance = Number(response.balance) * 10e-7;

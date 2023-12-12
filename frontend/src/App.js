@@ -372,6 +372,39 @@ export default function App() {
           })}
         </table>
         </div>
+        <div>
+        <h2>BASE Balances</h2>
+        <table class="center">
+          <tr>
+            <th>Label</th>
+            <th>Address</th>
+            <th>Balance</th>
+            <th>FLUX-BASE</th>
+          </tr>
+          {data && Object.values(data).map(({coin, label, address, ALERT, TOKENALERT, balance, tokenBalance}, key) => {
+            if (coin === 'BASE'){
+              var alert = balance < ALERT;
+              if (ALERT === 0 ) {
+                alert = false;
+              }
+              var tokenalert = tokenBalance < TOKENALERT;
+              if (TOKENALERT === 0 ) {
+                tokenalert = false;
+              }
+              var link = `${explorers[coin]}${address}`;
+              return (
+                <tr key={key}>
+                  <td bgcolor={alert || tokenalert ? 'red' : ''}>{label}</td>
+                  <td bgcolor={alert || tokenalert ? 'red' : ''}><a href={link}>{address}</a></td>
+                  <td bgcolor={alert ? 'red' : ''}>{balance}</td>
+                  <td bgcolor={tokenalert ? 'red' : ''}>{tokenBalance}</td>
+                </tr>
+              )
+            }
+            return null;
+          })}
+        </table>
+        </div>
       </div>
     </div>
   );
