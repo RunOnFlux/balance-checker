@@ -38,16 +38,13 @@ module.exports = {
   baseApiKey: '',
   addresses: [
     {
-      coin: 'FLUX', label: 'SNAPSHOT', address: 't1UwmAPJ1kv1qy6hV93nL5d5pQezBL55TgN', ALERT: 0,
-    },
-    {
-      coin: 'FLUX', label: 'MINING', address: 't1Yum7okNzR5kW84dfgwqB23yy1BCcpHFPq', ALERT: 0,
-    },
-    {
       coin: 'FLUX', label: 'SWAP', address: 't1abAp9oZenibGLFuZKyUjmL6FiATTaCYaj', ALERT: 100000,
     },
     {
-      coin: 'FLUX', label: 'COLD', address: 't1cjcLaDHkNcuXh6uoyNL7u1jx7GxvzfYAN', ALERT: 0,
+      coin: 'FLUX', label: 'COLD', address: 't1cjcLaDHkNcuXh6uoyNL7u1jx7GxvzfYAN', ALERT: 1000000,
+    },
+    {
+      coin: 'FLUX', label: 'LOCKED', address: 't3ThbWogDoAjGuS6DEnmN1GWJBRbVjSUK4T', ALERT: 160000000,
     },
     {
       coin: 'SOL', label: 'SNAPSHOT', address: '94W7UnJTBNEQSAk854NLTBgbqzSqHQNyFtQYPiGzNFaA', ALERT: 0.001, TOKENALERT: 10000,
@@ -59,7 +56,7 @@ module.exports = {
       coin: 'SOL', label: 'SWAP', address: 'CCafnH2sUhPHitQWyFLDCe3Xqwz1Vrc2caNR6PAwkPzP', ALERT: 0.001, TOKENALERT: 10000,
     },
     {
-      coin: 'SOL', label: 'COLD', address: '98duys57BNeYNdA4JPYzkraXe1XoUYXq5MMesx1JLsFY', ALERT: 0.001, TOKENALERT: 10000,
+      coin: 'SOL', label: 'LOCKED', address: '98duys57BNeYNdA4JPYzkraXe1XoUYXq5MMesx1JLsFY', ALERT: 0.001, TOKENALERT: 45000000,
     },
     {
       coin: 'BSC', label: 'SNAPSHOT', address: '0x4004755e538b77f80004b0f9b7f7df4e9793e584', ALERT: 0.01, TOKENALERT: 10000,
@@ -71,7 +68,7 @@ module.exports = {
       coin: 'BSC', label: 'SWAP', address: '0x9b192227da99b5a50d037b10c965609ed83c43d7', ALERT: 0.01, TOKENALERT: 100000,
     },
     {
-      coin: 'BSC', label: 'COLD', address: '0x5b79692e093c70e47070f525b593cc35b5adf530', ALERT: 0, TOKENALERT: 10000,
+      coin: 'BSC', label: 'LOCKED', address: '0x5b79692e093c70e47070f525b593cc35b5adf530', ALERT: 0, TOKENALERT: 350000000,
     },
     {
       coin: 'ETH', label: 'SNAPSHOT', address: '0x5a2387883bc5e875e09d533eef812b2da30f2615', ALERT: 0.1, TOKENALERT: 10000,
@@ -83,7 +80,7 @@ module.exports = {
       coin: 'ETH', label: 'SWAP', address: '0x134e4c74c670adefdcb2476df6960d9297bc7dad', ALERT: 0.1, TOKENALERT: 100000,
     },
     {
-      coin: 'ETH', label: 'COLD', address: '0xa23702e9349fbf9939864da1245f5b358e7ef30b', ALERT: 0, TOKENALERT: 10000,
+      coin: 'ETH', label: 'LOCKED', address: '0xa23702e9349fbf9939864da1245f5b358e7ef30b', ALERT: 0, TOKENALERT: 350000000,
     },
     {
       coin: 'TRON', label: 'SNAPSHOT', address: 'TSHXNnsrKGf6KAfosq5mckCnaY7gUfGwBJ', ALERT: 100, TOKENALERT: 10000,
@@ -95,7 +92,7 @@ module.exports = {
       coin: 'TRON', label: 'SWAP', address: 'TA7U2PTnHDyhHBns3X6NsDndjZDBUE3oUa', ALERT: 100, TOKENALERT: 10000,
     },
     {
-      coin: 'TRON', label: 'COLD', address: 'THV8NGvAwyaL22kkhkXHVhL7JBDyxRs3BZ', ALERT: 0, TOKENALERT: 10000,
+      coin: 'TRON', label: 'LOCKED', address: 'THV8NGvAwyaL22kkhkXHVhL7JBDyxRs3BZ', ALERT: 0, TOKENALERT: 350000000,
     },
     {
       coin: 'AVAX', label: 'SNAPSHOT', address: '0x1F3b258e0ff097FC4E25B827401D10fDeAa71fC5', ALERT: 1, TOKENALERT: 10000,
@@ -107,7 +104,7 @@ module.exports = {
       coin: 'AVAX', label: 'SWAP', address: '0xe0d28bc942B7B0b9A513F92a2fCef2bdF0377619', ALERT: 1, TOKENALERT: 10000,
     },
     {
-      coin: 'AVAX', label: 'COLD', address: '0xBdB587D89929b3188325643800f8f789Bf72FF53', ALERT: 0, TOKENALERT: 10000,
+      coin: 'AVAX', label: 'LOCKED', address: '0xBdB587D89929b3188325643800f8f789Bf72FF53', ALERT: 0, TOKENALERT: 350000000,
     },
     {
       coin: 'ERGO', label: 'SNAPSHOT', address: '9hhRnDa1Hih5TepwqK1Zbb8SGYUbFpqTwE9G78yffudKq59xTa9', ALERT: 0, TOKENALERT: 10000,
@@ -119,7 +116,7 @@ module.exports = {
       coin: 'ERGO', label: 'SWAP', address: '9fCKJ7g6ZffHAQb9UQY7S6YLF6dRVejBAXw284XNazkq8XLuZbw', ALERT: 2, TOKENALERT: 10000,
     },
     {
-      coin: 'ERGO', label: 'COLD', address: '9gtdyNTVfziFsGzH7KNjMcUj4v8MtADx4Z3prg6MWyHCCWz9NJM', ALERT: 0.5, TOKENALERT: 10000,
+      coin: 'ERGO', label: 'LOCKED', address: '9gtdyNTVfziFsGzH7KNjMcUj4v8MtADx4Z3prg6MWyHCCWz9NJM', ALERT: 0.5, TOKENALERT: 350000000,
     },
     {
       coin: 'KDA', label: 'SNAPSHOT', address: 'fluxsnapshotreward', ALERT: 0.001, TOKENALERT: 10000,
@@ -131,7 +128,7 @@ module.exports = {
       coin: 'KDA', label: 'SWAP', address: 'fluxswap', ALERT: 0.001, TOKENALERT: 10000,
     },
     {
-      coin: 'KDA', label: 'COLD', address: 'k:869daee30836deb4beb5fefcffb53bcb92d44514670bc721c073065b5832dbfb', ALERT: 0.001, TOKENALERT: 10000,
+      coin: 'KDA', label: 'LOCKED', address: 'k:869daee30836deb4beb5fefcffb53bcb92d44514670bc721c073065b5832dbfb', ALERT: 0.001, TOKENALERT: 30000000,
     },
     {
       coin: 'ALGO', label: 'SNAPSHOT', address: '2XAH2WI7726D5TGNXX7QBPL54PRMT4JUJZCXSAUWBJIBKC455AJ5RPEGAQ', ALERT: 25, TOKENALERT: 10000,
@@ -143,7 +140,7 @@ module.exports = {
       coin: 'ALGO', label: 'SWAP', address: '5MG5DOGNHGGG44HO7B4JXEORSFFLBNHFNTLYYR6OW53RNNCJK2LVSJVNXA', ALERT: 25, TOKENALERT: 10000,
     },
     {
-      coin: 'ALGO', label: 'COLD', address: 'X6H5CRS2TLI4M3B4BNVW3DKC6RER7ZGOLJBGDMCUFI5NKJCT4BBSUCXRW4', ALERT: 5, TOKENALERT: 10000,
+      coin: 'ALGO', label: 'LOCKED', address: 'X6H5CRS2TLI4M3B4BNVW3DKC6RER7ZGOLJBGDMCUFI5NKJCT4BBSUCXRW4', ALERT: 5, TOKENALERT: 350000000,
     },
     {
       coin: 'MATIC', label: 'SNAPSHOT', address: '0x25adf2050244c087fc1a27b870844ab9c1936bdf', ALERT: 2, TOKENALERT: 10000,
@@ -155,13 +152,13 @@ module.exports = {
       coin: 'MATIC', label: 'SWAP', address: '0x438ad183665511d41be2c779942f6c7660710be2', ALERT: 2, TOKENALERT: 10000,
     },
     {
-      coin: 'MATIC', label: 'COLD', address: '0xee38530d735d485558c454268ffefe7704cc25c0', ALERT: 2, TOKENALERT: 10000,
+      coin: 'MATIC', label: 'LOCKED', address: '0xee38530d735d485558c454268ffefe7704cc25c0', ALERT: 2, TOKENALERT: 350000000,
     },
     {
       coin: 'BASE', label: 'SWAP', address: '0x98f17e2d8c09f637a236d067191e0d11656a7df0', ALERT: 2, TOKENALERT: 10000,
     },
     {
-      coin: 'BASE', label: 'COLD', address: '0x7f5f9cd4c4c67c3f80ed74e0e1fb9e3d7975a479', ALERT: 2, TOKENALERT: 10000,
+      coin: 'BASE', label: 'LOCKED', address: '0x7f5f9cd4c4c67c3f80ed74e0e1fb9e3d7975a479', ALERT: 2, TOKENALERT: 350000000,
     },
   ],
 };

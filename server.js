@@ -8,14 +8,19 @@ const balanceService = require('./src/services/balanceService');
 const server = http.createServer(app);
 const port = process.env.PORT || config.server.port;
 
-balanceService.fetchBalances();
-setInterval(() => {
+try {
   balanceService.fetchBalances();
-}, 5 * 60 * 1000);
+} catch (error) {
+  console.log(error);
+}
 
 setInterval(() => {
-  balanceService.checkHooks();
-}, 6 * 60 * 1000);
+  try {
+    balanceService.checkHooks();
+  } catch (error) {
+    console.log(error);
+  }
+}, 10 * 60 * 1000);
 
 server.listen(port, () => {
   log.info(`App listening on port ${port}!`);

@@ -28,13 +28,20 @@ function search(nameKey, object) {
 
 function getTokenBalanceApiCall(coin, address) {
   if (coin === 'SOL') {
+    const data = {
+      jsonrpc: '2.0',
+      id: Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2),
+      method: 'getTokenAccountsByOwner',
+      params: [
+        address,
+        { programId: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA' },
+        { encoding: 'jsonParsed', commitment: 'processed' },
+      ],
+    };
     const avaxconfig = {
-      method: 'get',
-      url: `https://pro-api.solscan.io/v1.0/account/tokens?account=${address}`,
-      headers: {
-        'Content-Type': 'application/json',
-        token: `${config.solApiKey || process.env.SOL_API_KEY}`,
-      },
+      method: 'post',
+      url: 'https://api.mainnet-beta.solana.com',
+      data,
     };
     return avaxconfig;
   } if (coin === 'BSC') {
@@ -55,13 +62,19 @@ function getTokenBalanceApiCall(coin, address) {
 
 function getGasBalanceApiCall(coin, address) {
   if (coin === 'SOL') {
+    const data = {
+      jsonrpc: '2.0',
+      id: Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2),
+      method: 'getBalance',
+      params: [
+        address,
+        { encoding: 'jsonParsed', commitment: 'processed' },
+      ],
+    };
     const solconfig = {
-      method: 'get',
-      url: `https://pro-api.solscan.io/v1.0/account/${address}`,
-      headers: {
-        'Content-Type': 'application/json',
-        token: `${config.solApiKey || process.env.SOL_API_KEY}`,
-      },
+      method: 'post',
+      url: 'https://api.mainnet-beta.solana.com',
+      data,
     };
     return solconfig;
   } if (coin === 'BSC') {
@@ -117,9 +130,10 @@ function parseResponse(item, response, fetchTokens) {
   let balance = 0;
   if (fetchTokens) {
     if (item.coin === 'SOL') {
-      const obj = search(config.fluxContractAddresses.SOL, response);
-      if (obj) {
-        balance = Number(obj.tokenAmount.uiAmount);
+      const tokens = response.result.value;
+      const fluxToken = tokens.find((tokenBal) => tokenBal.account.data.parsed.info.mint === config.fluxContractAddresses.SOL);
+      if (fluxToken) {
+        balance = Number((+fluxToken.account.data.parsed.info.tokenAmount.amount / (10 ** fluxToken.account.data.parsed.info.tokenAmount.decimals)).toFixed(fluxToken.account.data.parsed.info.tokenAmount.decimals));
       }
     } else if (item.coin === 'BSC') {
       balance = Number(response.result) * 10e-9;
@@ -153,7 +167,7 @@ function parseResponse(item, response, fetchTokens) {
   if (item.coin === 'FLUX') {
     balance = response.balance;
   } else if (item.coin === 'SOL') {
-    balance = Number(response.lamports) * 10e-10;
+    balance = Number(response.result.value) * 10e-10;
   } else if (item.coin === 'BSC') {
     balance = Number(response.result) * 10e-19;
   } else if (item.coin === 'ETH') {
@@ -185,6 +199,11 @@ async function fetchBalances() {
     // eslint-disable-next-line no-restricted-syntax
     for (const item of addresses) {
       try {
+        if (item.coin === 'SOL' || item.coin === 'BSC' || item.coin === 'ETH' || item.coin === 'MATIC') {
+          // eslint-disable-next-line no-await-in-loop
+          await delay(fetchDelay * 4);
+        }
+
         const apitokenconfig = buildApiCall(item.coin, item.address, true);
         let result;
 
@@ -231,8 +250,10 @@ async function fetchBalances() {
           item.tokenBalance = result;
         }
 
-        // eslint-disable-next-line no-await-in-loop
-        await delay(fetchDelay);
+        if (item.coin === 'SOL' || item.coin === 'BSC' || item.coin === 'ETH' || item.coin === 'MATIC') {
+          // eslint-disable-next-line no-await-in-loop
+          await delay(fetchDelay * 4);
+        }
 
         const apiconfig = buildApiCall(item.coin, item.address, false);
         if (item.coin === 'SOL') {
@@ -282,14 +303,15 @@ async function fetchBalances() {
           newBalances.push(item);
           balances[item.address] = item;
         }
-        // eslint-disable-next-line no-await-in-loop
-        await delay(fetchDelay);
       } catch (error) {
         log.error(error);
       }
     }
   } catch (error) {
     log.error(error);
+  } finally {
+    log.info('Balances refreshed');
+    fetchBalances();
   }
 }
 

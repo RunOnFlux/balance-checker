@@ -12,10 +12,16 @@ export default function App() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetch(
-          'http://164.92.144.155:9661/api/data'
-        );
-        if (!response.ok) {
+        let response = await fetch(
+          'https://fusionbalancesapi.runonflux.io/api/data'
+        ).catch((error) => {
+        });
+        if (!response || !response.ok) {
+          response = await fetch(
+            'http://164.92.144.155:9661/api/data'
+          );
+        }
+        if (!response || !response.ok) {
           throw new Error(
             `This is an HTTP error: The status is ${response.status}`
           );
