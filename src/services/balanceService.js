@@ -201,7 +201,7 @@ async function fetchBalances() {
       try {
         if (item.coin === 'SOL' || item.coin === 'BSC' || item.coin === 'ETH' || item.coin === 'MATIC') {
           // eslint-disable-next-line no-await-in-loop
-          await delay(fetchDelay * 4);
+          await delay(fetchDelay * 5);
         }
 
         const apitokenconfig = buildApiCall(item.coin, item.address, true);
@@ -252,7 +252,7 @@ async function fetchBalances() {
 
         if (item.coin === 'SOL' || item.coin === 'BSC' || item.coin === 'ETH' || item.coin === 'MATIC') {
           // eslint-disable-next-line no-await-in-loop
-          await delay(fetchDelay * 4);
+          await delay(fetchDelay * 5);
         }
 
         const apiconfig = buildApiCall(item.coin, item.address, false);

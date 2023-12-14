@@ -14,13 +14,15 @@ try {
   console.log(error);
 }
 
-setInterval(() => {
-  try {
-    balanceService.checkHooks();
-  } catch (error) {
-    console.log(error);
-  }
-}, 10 * 60 * 1000);
+if (!process.env.FLUXOS) {
+  setInterval(() => {
+    try {
+      balanceService.checkHooks();
+    } catch (error) {
+      console.log(error);
+    }
+  }, 10 * 60 * 1000);
+}
 
 server.listen(port, () => {
   log.info(`App listening on port ${port}!`);
