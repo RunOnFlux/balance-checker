@@ -38,6 +38,9 @@ module.exports = {
   baseApiKey: '',
   addresses: [
     {
+      coin: 'FLUX', label: 'MINING', address: 't1Yum7okNzR5kW84dfgwqB23yy1BCcpHFPq', ALERT: 50000,
+    },
+    {
       coin: 'FLUX', label: 'SWAP', address: 't1abAp9oZenibGLFuZKyUjmL6FiATTaCYaj', ALERT: 100000,
     },
     {
