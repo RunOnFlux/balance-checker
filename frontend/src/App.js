@@ -13,9 +13,13 @@ export default function App() {
     const getData = async () => {
       try {
         let response = await fetch(
-          'https://fusionbalancesapi.runonflux.io/api/data'
-        ).catch((error) => {
-        });
+          'https://fusionbalancechecker_37599.app.runonflux.io/api/data'
+        )
+        if (!response || !response.ok) {
+          response = await fetch(
+            'https://fusionbalancesapi.runonflux.io/api/data'
+          );
+        }
         if (!response || !response.ok) {
           response = await fetch(
             'http://164.92.144.155:9661/api/data'
