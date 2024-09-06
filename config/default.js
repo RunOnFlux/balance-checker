@@ -158,6 +158,12 @@ module.exports = {
       coin: 'MATIC', label: 'LOCKED', address: '0xee38530d735d485558c454268ffefe7704cc25c0', ALERT: 2, TOKENALERT: 350000000,
     },
     {
+      coin: 'BASE', label: 'SNAPSHOT', address: '0xdcc46899f137e7eb82437b230898dabaf3d73046', ALERT: 0.005, TOKENALERT: 10000,
+    },
+    {
+      coin: 'BASE', label: 'MINING', address: '0xe91b74d3c716ce77179384916f3c1700942226cc', ALERT: 0.005, TOKENALERT: 10000,
+    },
+    {
       coin: 'BASE', label: 'SWAP', address: '0x98f17e2d8c09f637a236d067191e0d11656a7df0', ALERT: 0.005, TOKENALERT: 10000,
     },
     {
