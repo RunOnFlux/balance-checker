@@ -40,7 +40,7 @@ function getTokenBalanceApiCall(coin, address) {
     };
     const avaxconfig = {
       method: 'post',
-      url: 'https://api.mainnet-beta.solana.com',
+      url: 'https://node.sol.zelcore.io',
       data,
     };
     return avaxconfig;
@@ -73,7 +73,7 @@ function getGasBalanceApiCall(coin, address) {
     };
     const solconfig = {
       method: 'post',
-      url: 'https://api.mainnet-beta.solana.com',
+      url: 'https://node.sol.zelcore.io',
       data,
     };
     return solconfig;
@@ -199,7 +199,7 @@ async function fetchBalances() {
     // eslint-disable-next-line no-restricted-syntax
     for (const item of addresses) {
       try {
-        if (item.coin === 'SOL' || item.coin === 'BSC' || item.coin === 'ETH' || item.coin === 'MATIC') {
+        if (item.coin === 'BSC' || item.coin === 'ETH' || item.coin === 'MATIC' || item.coin === 'BASE') {
           // eslint-disable-next-line no-await-in-loop
           await delay(fetchDelay * 5);
         }
@@ -250,7 +250,7 @@ async function fetchBalances() {
           item.tokenBalance = result;
         }
 
-        if (item.coin === 'SOL' || item.coin === 'BSC' || item.coin === 'ETH' || item.coin === 'MATIC') {
+        if (item.coin === 'BSC' || item.coin === 'ETH' || item.coin === 'MATIC' || item.coin === 'MATIC') {
           // eslint-disable-next-line no-await-in-loop
           await delay(fetchDelay * 5);
         }
