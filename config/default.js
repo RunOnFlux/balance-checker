@@ -26,16 +26,16 @@ module.exports = {
     MATIC: '0xA2bb7A68c46b53f6BbF6cC91C865Ae247A82E99B',
     BASE: '0xb008bdcf9cdff9da684a190941dc3dca8c2cdd44',
   },
-  fetchDelay: 1100, // in case of missing api key
-  bscApiKey: '',
-  ethApiKey: '',
+  fetchDelay: 50, // in case of missing api key
+  bscApiKey: 'ATB3N4CY9HBH4YNUK71H7AXSB7KACSR7Q5',
+  ethApiKey: 'KTIM6I4VUA2KP94ICCEMZR7VD4TRURZ3UU',
   solApiKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkQXQiOjE3MDIzODQ2NzAzMjEsImVtYWlsIjoidGFkZWFzQHJ1bm9uZmx1eC5pbyIsImFjdGlvbiI6InRva2VuLWFwaSIsImlhdCI6MTcwMjM4NDY3MH0.dvwAapchZoBBWpmeM3UnU2JH1PC78lqwqI9J5JCqNCc',
-  maticApiKey: '',
+  maticApiKey: '7BAK281G85JQ91766GQQ8GFB17MGKW6NM9',
   avaxApiKey: '',
   discordHook: '',
   kdaApi: '',
   kdaTokenApi: '',
-  baseApiKey: '',
+  baseApiKey: '4NWEV3ZKFW4TIC93Q1J9R3KUNSHTDY9H9D',
   addresses: [
     {
       coin: 'FLUX', label: 'MINING', address: 't1Yum7okNzR5kW84dfgwqB23yy1BCcpHFPq', ALERT: 50000,
@@ -95,7 +95,7 @@ module.exports = {
       coin: 'ETH', label: 'SWAP', address: '0x134e4c74c670adefdcb2476df6960d9297bc7dad', ALERT: 0.1, TOKENALERT: 100000,
     },
     {
-      coin: 'ETH', label: 'LOCKED', address: '0xa23702e9349fbf9939864da1245f5b358e7ef30b', ALERT: 0, TOKENALERT: 350000000,
+      coin: 'ETH', label: 'LOCKED', address: '0xa23702e9349fbf9939864da1245f5b358e7ef30b', ALERT: 0, TOKENALERT: 345000000,
     },
     {
       coin: 'ETH', label: 'LOCKED SNAPSHOT', address: '0x5a2e9f076ba06bae75d2bb6586139b95055ceeb4', ALERT: 0, TOKENALERT: 1300000,
@@ -209,7 +209,7 @@ module.exports = {
       coin: 'MATIC', label: 'LOCKED SNAPSHOT', address: '0xc7b7076ca1d7971c2e27b7c4f6493d8140c2fdd0', ALERT: 0, TOKENALERT: 2000000,
     },
     {
-      coin: 'MATIC', label: 'LOCKED MINING', address: '0xd6bd199e94a9ac4dc73ce4dd4c0c02c82d6cf6c2', ALERT: 0, TOKENALERT: 40000000,
+      coin: 'MATIC', label: 'LOCKED MINING', address: '0xd6bd199e94a9ac4dc73ce4dd4c0c02c82d6cf6c2', ALERT: 0, TOKENALERT: 4000000,
     },
     {
       coin: 'BASE', label: 'SNAPSHOT', address: '0xdcc46899f137e7eb82437b230898dabaf3d73046', ALERT: 0.005, TOKENALERT: 10000,
@@ -227,7 +227,7 @@ module.exports = {
       coin: 'BASE', label: 'LOCKED SNAPSHOT', address: '0xe05fb97b601fb036bc7b75fcb1c8027193213af5', ALERT: 0, TOKENALERT: 3000000,
     },
     {
-      coin: 'BASE', label: 'LOCKED MINING', address: '0xd86292b7e8d3ca5ddc474feaf46455bfa55ae36b', ALERT: 0, TOKENALERT: 40000000,
+      coin: 'BASE', label: 'LOCKED MINING', address: '0xd86292b7e8d3ca5ddc474feaf46455bfa55ae36b', ALERT: 0, TOKENALERT: 4000000,
     },
   ],
 };
