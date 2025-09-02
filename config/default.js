@@ -95,7 +95,7 @@ module.exports = {
       coin: 'ETH', label: 'SWAP', address: '0x134e4c74c670adefdcb2476df6960d9297bc7dad', ALERT: 0.1, TOKENALERT: 100000,
     },
     {
-      coin: 'ETH', label: 'LOCKED', address: '0xa23702e9349fbf9939864da1245f5b358e7ef30b', ALERT: 0, TOKENALERT: 320000000,
+      coin: 'ETH', label: 'LOCKED', address: '0xa23702e9349fbf9939864da1245f5b358e7ef30b', ALERT: 0, TOKENALERT: 300000000,
     },
     {
       coin: 'ETH', label: 'LOCKED SNAPSHOT', address: '0x5a2e9f076ba06bae75d2bb6586139b95055ceeb4', ALERT: 0, TOKENALERT: 1300000,
