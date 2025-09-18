@@ -26,7 +26,7 @@ module.exports = {
     MATIC: '0xA2bb7A68c46b53f6BbF6cC91C865Ae247A82E99B',
     BASE: '0xb008bdcf9cdff9da684a190941dc3dca8c2cdd44',
   },
-  fetchDelay: 50, // in case of missing api key
+  fetchDelay: 500, // in case of missing api key
   bscApiKey: 'ATB3N4CY9HBH4YNUK71H7AXSB7KACSR7Q5',
   ethApiKey: 'KTIM6I4VUA2KP94ICCEMZR7VD4TRURZ3UU',
   solApiKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkQXQiOjE3MDIzODQ2NzAzMjEsImVtYWlsIjoidGFkZWFzQHJ1bm9uZmx1eC5pbyIsImFjdGlvbiI6InRva2VuLWFwaSIsImlhdCI6MTcwMjM4NDY3MH0.dvwAapchZoBBWpmeM3UnU2JH1PC78lqwqI9J5JCqNCc',

@@ -45,7 +45,7 @@ function getTokenBalanceApiCall(coin, address) {
     };
     return avaxconfig;
   } if (coin === 'BSC') {
-    return `https://api.bscscan.com/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.BSC}&address=${address}&tag=latest&apikey=${config.bscApiKey || process.env.BSC_API_KEY}`;
+    return `https://api.etherscan.io/v2/api?chainid=56&module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.BSC}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'ETH') {
     return `https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.ETH}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'MATIC') {
@@ -78,7 +78,7 @@ function getGasBalanceApiCall(coin, address) {
     };
     return solconfig;
   } if (coin === 'BSC') {
-    return `https://api.bscscan.com/api?module=account&action=balance&address=${address}&apikey=${config.bscApiKey || process.env.BSC_API_KEY}`;
+    return `https://api.etherscan.io/v2/api?chainid=56&module=account&action=balance&address=${address}&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'ETH') {
     return `https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'MATIC') {
