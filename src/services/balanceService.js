@@ -47,13 +47,13 @@ function getTokenBalanceApiCall(coin, address) {
   } if (coin === 'BSC') {
     return `https://api.etherscan.io/v2/api?chainid=56&module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.BSC}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'ETH') {
-    return `https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.ETH}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
+    return `https://api.etherscan.io/v2/api?chainid=1&module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.ETH}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'MATIC') {
-    return `https://api.polygonscan.com/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.MATIC}&address=${address}&tag=latest&apikey=${config.maticApiKey || process.env.MATIC_API_KEY}`;
+    return `https://api.etherscan.io/v2/api?chainid=137&module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.MATIC}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'AVAX') {
-    return `https://api.snowtrace.io/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.AVAX}&address=${address}&tag=latest&apikey=${config.avaxApiKey || process.env.AVAX_API_KEY}`;
+    return `https://api.etherscan.io/v2/api?chainid=43114&module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.AVAX}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'BASE') {
-    return `https://api.basescan.org/api?module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.BASE}&address=${address}&tag=latest&apikey=${config.baseApiKey || process.env.BASE_API_KEY}`;
+    return `https://api.etherscan.io/v2/api?chainid=8453&module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.BASE}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'KDA') {
     return 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact';
   }
@@ -80,13 +80,13 @@ function getGasBalanceApiCall(coin, address) {
   } if (coin === 'BSC') {
     return `https://api.etherscan.io/v2/api?chainid=56&module=account&action=balance&address=${address}&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'ETH') {
-    return `https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
+    return `https://api.etherscan.io/v2/api?chainid=1&module=account&action=balance&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'MATIC') {
-    return `https://api.polygonscan.com/api?module=account&action=balance&address=${address}&tag=latest&apikey=${config.maticApiKey || process.env.MATIC_API_KEY}`;
+    return `https://api.etherscan.io/v2/api?chainid=137&module=account&action=balance&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'AVAX') {
-    return `https://api.snowtrace.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${config.avaxApiKey || process.env.AVAX_API_KEY}`;
+    return `https://api.etherscan.io/v2/api?chainid=43114&module=account&action=balance&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'BASE') {
-    return `https://api.basescan.org/api?module=account&action=balance&address=${address}&tag=latest&apikey=${config.baseApiKey || process.env.BASE_API_KEY}`;
+    return `https://api.etherscan.io/v2/api?chainid=8453&module=account&action=balance&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'KDA') {
     return 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact';
   }
