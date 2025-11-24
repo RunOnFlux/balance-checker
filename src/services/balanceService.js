@@ -55,7 +55,7 @@ function getTokenBalanceApiCall(coin, address) {
   } if (coin === 'BASE') {
     return `https://api.etherscan.io/v2/api?chainid=8453&module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.BASE}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'KDA') {
-    return 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact';
+    return 'https://api.chainweb-community.org/chainweb/0.0/mainnet01/chain/0/pact';
   }
   throw new Error('Invalid Token Coin Specified');
 }
@@ -88,7 +88,7 @@ function getGasBalanceApiCall(coin, address) {
   } if (coin === 'BASE') {
     return `https://api.etherscan.io/v2/api?chainid=8453&module=account&action=balance&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'KDA') {
-    return 'https://api.chainweb.com/chainweb/0.0/mainnet01/chain/0/pact';
+    return 'https://api.chainweb-community.org/chainweb/0.0/mainnet01/chain/0/pact';
   }
   throw new Error('Invalid Gas Coin Specified');
 }

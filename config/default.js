@@ -10,7 +10,7 @@ module.exports = {
     SOL: 'https://solscan.io/account/',
     AVAX: 'https://avascan.info/blockchain/c/address/',
     ERGO: 'https://explorer.ergoplatform.com/en/addresses/',
-    KDA: 'https://explorer.chainweb.com/mainnet/account/',
+    KDA: 'https://explorer.chainweb-community.org/mainnet/account/',
     ALGO: 'https://algoexplorer.io/address/',
     MATIC: 'https://polygonscan.com/address/',
     BASE: 'https://basescan.org/address/',
