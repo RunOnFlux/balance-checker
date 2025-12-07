@@ -40,7 +40,7 @@ function getTokenBalanceApiCall(coin, address) {
     };
     const avaxconfig = {
       method: 'post',
-      url: 'https://node.sol.zelcore.io',
+      url: 'https://api.mainnet-beta.solana.com',
       data,
     };
     return avaxconfig;
@@ -73,7 +73,7 @@ function getGasBalanceApiCall(coin, address) {
     };
     const solconfig = {
       method: 'post',
-      url: 'https://node.sol.zelcore.io',
+      url: 'https://api.mainnet-beta.solana.com',
       data,
     };
     return solconfig;
@@ -253,6 +253,10 @@ async function fetchBalances() {
         if (item.coin === 'BSC' || item.coin === 'ETH' || item.coin === 'MATIC' || item.coin === 'MATIC') {
           // eslint-disable-next-line no-await-in-loop
           await delay(fetchDelay * 5);
+        }
+        if (item.coin === 'SOL') {
+          // eslint-disable-next-line no-await-in-loop
+          await delay(fetchDelay * 10);
         }
 
         const apiconfig = buildApiCall(item.coin, item.address, false);
