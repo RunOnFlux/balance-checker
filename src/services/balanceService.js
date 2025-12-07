@@ -203,6 +203,10 @@ async function fetchBalances() {
           // eslint-disable-next-line no-await-in-loop
           await delay(fetchDelay * 5);
         }
+        if (item.coin === 'SOL') {
+          // eslint-disable-next-line no-await-in-loop
+          await delay(fetchDelay * 10);
+        }
 
         const apitokenconfig = buildApiCall(item.coin, item.address, true);
         let result;
