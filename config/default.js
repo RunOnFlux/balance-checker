@@ -137,7 +137,7 @@ module.exports = {
       coin: 'AVAX', label: 'LOCKED SNAPSHOT', address: '0x2599C465F0290237954E04550dA8cf8c94644e29', ALERT: 0, TOKENALERT: 1500000,
     },
     {
-      coin: 'AVAX', label: 'LOCKED MINING', address: '0xc926CbFCbF9313E6530e3342Ee1556ce5D2c0da9', ALERT: 0, TOKENALERT: 4000000,
+      coin: 'AVAX', label: 'LOCKED MINING', address: '0xc926CbFCbF9313E6530e3342Ee1556ce5D2c0da9', ALERT: 0, TOKENALERT: 3800000,
     },
     {
       coin: 'ERGO', label: 'SNAPSHOT', address: '9hhRnDa1Hih5TepwqK1Zbb8SGYUbFpqTwE9G78yffudKq59xTa9', ALERT: 0, TOKENALERT: 10000,
