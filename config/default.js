@@ -44,7 +44,7 @@ module.exports = {
       coin: 'FLUX', label: 'SWAP', address: 't1abAp9oZenibGLFuZKyUjmL6FiATTaCYaj', ALERT: 100000,
     },
     {
-      coin: 'FLUX', label: 'COLD', address: 't1cjcLaDHkNcuXh6uoyNL7u1jx7GxvzfYAN', ALERT: 1000000,
+      coin: 'FLUX', label: 'COLD', address: 't3KXyFLuvvdMFVWb65LNiXGFwidrqE2NP9U', ALERT: 39500000,
     },
     {
       coin: 'FLUX', label: 'LOCKED', address: 't3ThbWogDoAjGuS6DEnmN1GWJBRbVjSUK4T', ALERT: 160000000,
@@ -77,7 +77,7 @@ module.exports = {
       coin: 'BSC', label: 'SWAP', address: '0x9b192227da99b5a50d037b10c965609ed83c43d7', ALERT: 0.01, TOKENALERT: 100000,
     },
     {
-      coin: 'BSC', label: 'LOCKED', address: '0x5b79692e093c70e47070f525b593cc35b5adf530', ALERT: 0, TOKENALERT: 350000000,
+      coin: 'BSC', label: 'LOCKED', address: '0x0fc9fe8c3aa97f298700ad2df58e1476dc033b61', ALERT: 0, TOKENALERT: 372750000,
     },
     {
       coin: 'BSC', label: 'LOCKED SNAPSHOT', address: '0x1e1f3d2517c97295f68836f154f531049a9b133a', ALERT: 0, TOKENALERT: 1100000,
@@ -95,7 +95,7 @@ module.exports = {
       coin: 'ETH', label: 'SWAP', address: '0x134e4c74c670adefdcb2476df6960d9297bc7dad', ALERT: 0.1, TOKENALERT: 100000,
     },
     {
-      coin: 'ETH', label: 'LOCKED', address: '0xa23702e9349fbf9939864da1245f5b358e7ef30b', ALERT: 0, TOKENALERT: 300000000,
+      coin: 'ETH', label: 'LOCKED', address: '0x3d1759846bbbdeb7f71558d1fc6f00916006a795', ALERT: 0, TOKENALERT: 279000000,
     },
     {
       coin: 'ETH', label: 'LOCKED SNAPSHOT', address: '0x5a2e9f076ba06bae75d2bb6586139b95055ceeb4', ALERT: 0, TOKENALERT: 1300000,
