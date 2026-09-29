@@ -9,6 +9,10 @@ const hooks = require('../../discord/hooks');
 dotenv.config();
 const { explorers, addresses, fetchDelay } = config;
 
+// Without timeouts a single stalled upstream connection hangs the refresh loop forever
+const REQUEST_TIMEOUT = 30 * 1000;
+axios.defaults.timeout = REQUEST_TIMEOUT;
+
 const balances = {};
 const history = {};
 
@@ -16,6 +20,16 @@ function delay(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
+}
+
+// Hard deadline for any request - axios timeout only covers socket inactivity after connect
+// and pact-lang-api (node-fetch) has no timeout at all
+function withTimeout(promise, ms = REQUEST_TIMEOUT) {
+  let timer;
+  const timeout = new Promise((resolve, reject) => {
+    timer = setTimeout(() => reject(new Error(`Request timed out after ${ms}ms`)), ms);
+  });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
 }
 
 function search(nameKey, object) {
@@ -213,7 +227,7 @@ async function fetchBalances() {
 
         if (item.coin === 'SOL') {
           // eslint-disable-next-line no-await-in-loop
-          const response = await axios(apitokenconfig).catch((error) => {
+          const response = await withTimeout(axios(apitokenconfig)).catch((error) => {
             log.error(error);
           });
           result = parseResponse(item, response.data, true);
@@ -224,11 +238,11 @@ async function fetchBalances() {
           // mkMeta takes in account name, chain id, gas price, gas limit, creation time, time-to-live
           const dumMeta = (chainId) => kadenaPact.lang.mkMeta('dummyaccount', chainId.toString(), 0.00000001, 6000, creationTime(), 900);
           // eslint-disable-next-line no-await-in-loop
-          const response = await kadenaPact.fetch.local({
+          const response = await withTimeout(kadenaPact.fetch.local({
             pactCode: `(runonflux.flux.details "${item.address}")`,
             keyPairs: kadenaPact.crypto.genKeyPair(),
             meta: dumMeta('0'),
-          }, apitokenconfig).catch((error) => {
+          }, apitokenconfig)).catch((error) => {
             log.error(error);
           });
           let confirmedBal = 0;
@@ -247,7 +261,7 @@ async function fetchBalances() {
           item.tokenBalance = confirmedBal;
         } else {
           // eslint-disable-next-line no-await-in-loop
-          const response = await axios.get(apitokenconfig);
+          const response = await withTimeout(axios.get(apitokenconfig));
           // log.info(response.data.confirmed.tokens);
           result = parseResponse(item, response.data, true);
           log.info(`${item.coin}, ${item.address}: ${result}`);
@@ -266,7 +280,7 @@ async function fetchBalances() {
         const apiconfig = buildApiCall(item.coin, item.address, false);
         if (item.coin === 'SOL') {
           // eslint-disable-next-line no-await-in-loop
-          const response = await axios(apiconfig).catch((error) => {
+          const response = await withTimeout(axios(apiconfig)).catch((error) => {
             log.error(error);
           });
           result = parseResponse(item, response.data, false);
@@ -279,11 +293,11 @@ async function fetchBalances() {
           // mkMeta takes in account name, chain id, gas price, gas limit, creation time, time-to-live
           const dumMeta = (chainId) => kadenaPact.lang.mkMeta('dummyaccount', chainId.toString(), 0.00000001, 6000, creationTime(), 900);
           // eslint-disable-next-line no-await-in-loop
-          const response = await kadenaPact.fetch.local({
+          const response = await withTimeout(kadenaPact.fetch.local({
             pactCode: `(coin.details "${item.address}")`,
             keyPairs: kadenaPact.crypto.genKeyPair(),
             meta: dumMeta('0'),
-          }, apiconfig).catch((error) => {
+          }, apiconfig)).catch((error) => {
             log.error(error);
           });
           let confirmedBal = 0;
@@ -304,7 +318,7 @@ async function fetchBalances() {
           balances[item.address] = item;
         } else {
           // eslint-disable-next-line no-await-in-loop
-          const response = await axios.get(apiconfig);
+          const response = await withTimeout(axios.get(apiconfig));
           result = parseResponse(item, response.data, false);
           log.info(`${item.coin}, ${item.address}: ${result}`);
           item.balance = result;
