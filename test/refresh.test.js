@@ -126,6 +126,12 @@ describe('on-demand balance refresh', () => {
     expect(done.event).to.equal('done');
     expect(progress[0].data.done).to.equal(0);
     expect(progress[progress.length - 1].data.done).to.equal(config.addresses.length);
+    // Every finished address arrives with its progress event.
+    const items = progress.filter((e) => e.data.item).map((e) => e.data.item);
+    expect(items.map((i) => i.address).sort()).to.deep.equal(config.addresses.map((a) => a.address).sort());
+    expect(items.find((i) => i.address === ethLocked.address).error).to.equal('Request failed with status code 502');
+    expect(items.find((i) => i.address === bscSwap.address).tokenBalance).to.be.closeTo(2500, 1e-6);
+    expect(JSON.stringify(progress)).to.not.match(/apikey/i);
     expect(Object.keys(done.data.balances)).to.have.length(config.addresses.length);
     expect(done.data.refreshedAt).to.be.a('string');
     expect(done.data.failed).to.equal(1);

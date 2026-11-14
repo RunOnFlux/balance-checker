@@ -11,7 +11,7 @@ module.exports = {
     AVAX: 'https://avascan.info/blockchain/c/address/',
     ERGO: 'https://explorer.ergoplatform.com/en/addresses/',
     KDA: 'https://explorer.chainweb-community.org/mainnet/account/',
-    ALGO: 'https://algoexplorer.io/address/',
+    ALGO: 'https://allo.info/account/',
     MATIC: 'https://polygonscan.com/address/',
     BASE: 'https://basescan.org/address/',
   },
