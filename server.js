@@ -8,10 +8,12 @@ const balanceService = require('./src/services/balanceService');
 const server = http.createServer(app);
 const port = process.env.PORT || config.server.port;
 
-try {
-  balanceService.fetchBalances();
-} catch (error) {
-  console.log(error);
+// No automatic refresh by default: balances refresh when someone presses
+// Refresh on the page (GET /api/refresh). Set AUTO_REFRESH_MINUTES only on a
+// deployment that sends the Discord low-balance alerts.
+const autoRefreshMinutes = Number(process.env.AUTO_REFRESH_MINUTES) || 0;
+if (autoRefreshMinutes > 0) {
+  balanceService.startAutoRefresh(autoRefreshMinutes);
 }
 
 if (!process.env.FLUXOS) {

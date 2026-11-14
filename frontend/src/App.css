@@ -88,3 +88,55 @@ td {
   grid-template-columns: repeat(2, 1fr);
   gap: 5px;
 }
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 0 16px 20px;
+}
+
+button.refresh {
+  padding: 8px 18px;
+  font-size: 15px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background: #fff;
+  color: #111;
+  cursor: pointer;
+}
+
+button.refresh:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #333;
+}
+
+.status progress {
+  width: 220px;
+}
+
+.status.ok {
+  color: #1b6e2b;
+}
+
+.status.warn {
+  color: #8a5a00;
+}
+
+.status.error {
+  color: #b00020;
+}
+
+.stale {
+  cursor: help;
+  color: #8a5a00;
+}

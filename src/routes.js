@@ -9,4 +9,7 @@ module.exports = (app) => {
   app.get(`/${prefix}/data`, (req, res) => {
     balanceService.getData(req, res);
   });
+  app.get(`/${prefix}/refresh`, (req, res) => {
+    balanceService.refresh(req, res);
+  });
 };
