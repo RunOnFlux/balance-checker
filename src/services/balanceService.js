@@ -388,7 +388,9 @@ function startRefresh({ manual }) {
       state.failed += 1;
     }
     state.current = `${item.coin} ${item.label}`;
-    state.listeners.forEach((listener) => listener(progressOf(state)));
+    // The finished address rides along so the page can update its row now.
+    const progress = { ...progressOf(state), item: { ...item } };
+    state.listeners.forEach((listener) => listener(progress));
   };
   if (manual) {
     manualRefreshStarts.push(Date.now());
