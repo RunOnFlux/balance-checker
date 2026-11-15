@@ -5,24 +5,26 @@ const axios = require('axios');
 const kadenaPact = require('pact-lang-api');
 const config = require('config');
 
-// Every upstream is stubbed: these tests never reach Etherscan or any chain.
+// Every upstream is stubbed: these tests never reach any chain.
 let calls = [];
-let failUrlPart = null;
-let throttleOnce = new Set();
+// Requests whose URL or body contains this string fail with a 502.
+let failPart = null;
+// The first EVM node of a chain fails once for this address, the second answers.
+let firstNodeDownFor = new Set();
+
+const EVM_NODES = new Set(Object.values(config.evmRpcUrls).flat());
+const FIRST_NODES = new Set(Object.values(config.evmRpcUrls).map((urls) => urls[0]));
 
 function stubResponse(cfg) {
   const url = cfg.url || '';
-  if (url.includes('api.etherscan.io')) {
-    const params = new URL(url).searchParams;
-    const address = params.get('address');
-    if (throttleOnce.has(address)) {
-      throttleOnce.delete(address);
-      return { status: '0', message: 'NOTOK', result: 'Max calls per sec rate limit reached (5/sec)' };
-    }
-    if (params.get('action') === 'tokenbalance') {
-      return { status: '1', message: 'OK', result: '250000000000' };
-    }
-    return { status: '1', message: 'OK', result: '2000000000000000000' };
+  if (EVM_NODES.has(url)) {
+    const batch = typeof cfg.data === 'string' ? JSON.parse(cfg.data) : cfg.data;
+    // 2 native coins (18 decimals) and 2500 FLUX (8 decimals).
+    return batch.map((call) => ({
+      jsonrpc: '2.0',
+      id: call.id,
+      result: call.method === 'eth_getBalance' ? '0x1bc16d674ec80000' : `0x${(250000000000).toString(16).padStart(64, '0')}`,
+    })).reverse(); // nodes may answer a batch in any order
   }
   if (url.includes('explorer.runonflux.io')) return { balance: 123 };
   if (url.includes('algonode')) return { amount: 5000000, assets: [{ 'asset-id': 1029804829, amount: 100 }] };
@@ -47,7 +49,15 @@ function stubResponse(cfg) {
 axios.defaults.adapter = async (cfg) => {
   calls.push(cfg.url);
   await new Promise((resolve) => { setTimeout(resolve, 2); });
-  if (failUrlPart && (cfg.url || '').includes(failUrlPart)) {
+  const body = typeof cfg.data === 'string' ? cfg.data : JSON.stringify(cfg.data || '');
+  const downFor = [...firstNodeDownFor].find((address) => body.includes(address));
+  if (downFor && FIRST_NODES.has(cfg.url)) {
+    firstNodeDownFor.delete(downFor);
+    const error = new Error('timeout of 10000ms exceeded');
+    error.config = cfg;
+    throw error;
+  }
+  if (failPart && ((cfg.url || '').includes(failPart) || body.includes(failPart))) {
     const error = new Error('Request failed with status code 502');
     error.config = cfg;
     throw error;
@@ -60,10 +70,9 @@ kadenaPact.fetch.local = async () => ({ result: { status: 'success', data: { bal
 
 function loadApp(env) {
   Object.assign(process.env, {
-    ETHERSCAN_GAP_MS: '0',
+    EVM_GAP_MS: '0',
     SOL_GAP_MS: '0',
     OTHER_GAP_MS: '0',
-    ETHERSCAN_THROTTLE_BACKOFF_MS: '0',
     REFRESH_MIN_INTERVAL_SECONDS: '60',
     REFRESH_MAX_PER_HOUR: '6',
     ...env,
@@ -99,8 +108,8 @@ async function refresh(app) {
 describe('on-demand balance refresh', () => {
   beforeEach(() => {
     calls = [];
-    failUrlPart = null;
-    throttleOnce = new Set();
+    failPart = null;
+    firstNodeDownFor = new Set();
   });
 
   it('does not fetch anything until asked', async () => {
@@ -117,8 +126,8 @@ describe('on-demand balance refresh', () => {
     const app = loadApp();
     const ethLocked = config.addresses.find((a) => a.coin === 'ETH' && a.label === 'LOCKED');
     const bscSwap = config.addresses.find((a) => a.coin === 'BSC' && a.label === 'SWAP');
-    failUrlPart = `address=${ethLocked.address}`;
-    throttleOnce.add(bscSwap.address);
+    failPart = ethLocked.address;
+    firstNodeDownFor.add(bscSwap.address);
 
     const events = await refresh(app);
     const progress = events.filter((e) => e.event === 'progress');
@@ -140,18 +149,26 @@ describe('on-demand balance refresh', () => {
     expect(failed.error).to.equal('Request failed with status code 502');
     expect(JSON.stringify(done.data)).to.not.match(/apikey/i);
 
-    const throttled = done.data.balances[bscSwap.address];
-    expect(throttled.error).to.equal(undefined);
-    expect(throttled.balance).to.be.closeTo(2, 1e-9);
-    expect(throttled.tokenBalance).to.be.closeTo(2500, 1e-6);
+    // The first BSC node timed out for this address; the second answered.
+    const fallback = done.data.balances[bscSwap.address];
+    expect(fallback.error).to.equal(undefined);
+    expect(fallback.balance).to.equal(2);
+    expect(fallback.tokenBalance).to.equal(2500);
+    // No EVM balance goes to Etherscan any more.
+    expect(calls.filter((url) => (url || '').includes('etherscan'))).to.have.length(0);
 
-    // FLUX, ALGO, TRON and ERGO need one call each, the rest two.
-    const single = config.addresses.filter((a) => ['FLUX', 'ALGO', 'TRON', 'ERGO'].includes(a.coin)).length;
-    const kda = config.addresses.filter((a) => a.coin === 'KDA').length;
-    // +1 for the throttled retry, -1 because the failing address stops after
-    // its first call. Kadena goes through pact-lang-api, not axios.
-    const expected = single + (config.addresses.length - single - kda) * 2 + 1 - 1;
+    // FLUX, ALGO, TRON and ERGO need one call each, Solana two, and an EVM
+    // address one batch. Kadena goes through pact-lang-api, not axios.
+    const count = (coins) => config.addresses.filter((a) => coins.includes(a.coin)).length;
+    const single = count(['FLUX', 'ALGO', 'TRON', 'ERGO']);
+    const sol = count(['SOL']);
+    const evm = count(['BSC', 'ETH', 'MATIC', 'AVAX', 'BASE']);
+    // +1: the failing ETH address is tried on both ETH nodes.
+    // +1: the BSC address whose first node timed out.
+    const expected = single + sol * 2 + evm + 1 + 1;
     expect(calls).to.have.length(expected);
+    const evmBatches = calls.filter((url) => EVM_NODES.has(url));
+    expect(evmBatches).to.have.length(evm + 2);
   });
 
   it('answers a second click within the minimum interval from the last refresh', async () => {

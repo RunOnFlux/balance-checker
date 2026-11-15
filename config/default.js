@@ -26,16 +26,19 @@ module.exports = {
     MATIC: '0xA2bb7A68c46b53f6BbF6cC91C865Ae247A82E99B',
     BASE: '0xb008bdcf9cdff9da684a190941dc3dca8c2cdd44',
   },
+  // EVM balances are read from these public nodes, in order, until one
+  // answers. No API keys needed.
+  evmRpcUrls: {
+    ETH: ['https://ethereum-rpc.publicnode.com', 'https://eth.drpc.org'],
+    BSC: ['https://bsc-dataseed.bnbchain.org', 'https://bsc-rpc.publicnode.com'],
+    MATIC: ['https://polygon-bor-rpc.publicnode.com', 'https://polygon.drpc.org'],
+    AVAX: ['https://api.avax.network/ext/bc/C/rpc', 'https://avalanche-c-chain-rpc.publicnode.com'],
+    BASE: ['https://mainnet.base.org', 'https://base-rpc.publicnode.com'],
+  },
   fetchDelay: 500, // in case of missing api key
-  bscApiKey: 'ATB3N4CY9HBH4YNUK71H7AXSB7KACSR7Q5',
-  ethApiKey: 'KTIM6I4VUA2KP94ICCEMZR7VD4TRURZ3UU',
-  solApiKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkQXQiOjE3MDIzODQ2NzAzMjEsImVtYWlsIjoidGFkZWFzQHJ1bm9uZmx1eC5pbyIsImFjdGlvbiI6InRva2VuLWFwaSIsImlhdCI6MTcwMjM4NDY3MH0.dvwAapchZoBBWpmeM3UnU2JH1PC78lqwqI9J5JCqNCc',
-  maticApiKey: '7BAK281G85JQ91766GQQ8GFB17MGKW6NM9',
-  avaxApiKey: '',
   discordHook: '',
   kdaApi: '',
   kdaTokenApi: '',
-  baseApiKey: '4NWEV3ZKFW4TIC93Q1J9R3KUNSHTDY9H9D',
   addresses: [
     {
       coin: 'FLUX', label: 'MINING', address: 't1Yum7okNzR5kW84dfgwqB23yy1BCcpHFPq', ALERT: 50000,
