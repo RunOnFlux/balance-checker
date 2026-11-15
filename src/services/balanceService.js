@@ -58,16 +58,6 @@ function getTokenBalanceApiCall(coin, address) {
       data,
     };
     return avaxconfig;
-  } if (coin === 'BSC') {
-    return `https://api.etherscan.io/v2/api?chainid=56&module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.BSC}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
-  } if (coin === 'ETH') {
-    return `https://api.etherscan.io/v2/api?chainid=1&module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.ETH}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
-  } if (coin === 'MATIC') {
-    return `https://api.etherscan.io/v2/api?chainid=137&module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.MATIC}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
-  } if (coin === 'AVAX') {
-    return `https://api.etherscan.io/v2/api?chainid=43114&module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.AVAX}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
-  } if (coin === 'BASE') {
-    return `https://api.etherscan.io/v2/api?chainid=8453&module=account&action=tokenbalance&contractaddress=${config.fluxContractAddresses.BASE}&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'KDA') {
     return 'https://api.chainweb-community.org/chainweb/0.0/mainnet01/chain/0/pact';
   }
@@ -91,16 +81,6 @@ function getGasBalanceApiCall(coin, address) {
       data,
     };
     return solconfig;
-  } if (coin === 'BSC') {
-    return `https://api.etherscan.io/v2/api?chainid=56&module=account&action=balance&address=${address}&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
-  } if (coin === 'ETH') {
-    return `https://api.etherscan.io/v2/api?chainid=1&module=account&action=balance&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
-  } if (coin === 'MATIC') {
-    return `https://api.etherscan.io/v2/api?chainid=137&module=account&action=balance&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
-  } if (coin === 'AVAX') {
-    return `https://api.etherscan.io/v2/api?chainid=43114&module=account&action=balance&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
-  } if (coin === 'BASE') {
-    return `https://api.etherscan.io/v2/api?chainid=8453&module=account&action=balance&address=${address}&tag=latest&apikey=${config.ethApiKey || process.env.ETH_API_KEY}`;
   } if (coin === 'KDA') {
     return 'https://api.chainweb-community.org/chainweb/0.0/mainnet01/chain/0/pact';
   }
@@ -149,19 +129,9 @@ function parseResponse(item, response, fetchTokens) {
       if (fluxToken) {
         balance = Number((+fluxToken.account.data.parsed.info.tokenAmount.amount / (10 ** fluxToken.account.data.parsed.info.tokenAmount.decimals)).toFixed(fluxToken.account.data.parsed.info.tokenAmount.decimals));
       }
-    } else if (item.coin === 'BSC') {
-      balance = Number(response.result) * 10e-9;
-    } else if (item.coin === 'ETH') {
-      balance = Number(response.result) * 10e-9;
-    } else if (item.coin === 'MATIC') {
-      balance = Number(response.result) * 10e-9;
-    } else if (item.coin === 'BASE') {
-      balance = Number(response.result) * 10e-9;
     } else if (item.coin === 'TRON') {
       const obj = search(config.fluxContractAddresses.TRON, response.trc20token_balances);
       balance = Number(obj.balance) * 10e-9;
-    } else if (item.coin === 'AVAX') {
-      balance = Number(response.result) * 10e-9;
     } else if (item.coin === 'ERGO') {
       const obj = search(config.fluxContractAddresses.ERGO, response.confirmed.tokens);
       balance = Number(obj.amount) * 10e-9;
@@ -182,18 +152,8 @@ function parseResponse(item, response, fetchTokens) {
     balance = response.balance;
   } else if (item.coin === 'SOL') {
     balance = Number(response.result.value) * 10e-10;
-  } else if (item.coin === 'BSC') {
-    balance = Number(response.result) * 10e-19;
-  } else if (item.coin === 'ETH') {
-    balance = Number(response.result) * 10e-19;
-  } else if (item.coin === 'MATIC') {
-    balance = Number(response.result) * 10e-19;
-  } else if (item.coin === 'BASE') {
-    balance = Number(response.result) * 10e-19;
   } else if (item.coin === 'TRON') {
     balance = Number(response.balance) * 10e-7;
-  } else if (item.coin === 'AVAX') {
-    balance = Number(response.result) * 10e-19;
   } else if (item.coin === 'ERGO') {
     balance = Number(response.confirmed.nanoErgs) * 10e-10;
   } else if (item.coin === 'KDA') {
@@ -208,10 +168,17 @@ function parseResponse(item, response, fetchTokens) {
 
 // Balances are refreshed on demand only: the page's Refresh button opens
 // GET /api/refresh. The old code re-fetched every address in an endless loop
-// (one pass, five minutes' sleep, repeat) on every Flux instance. That was
-// ~60 Etherscan calls per pass, ~23k a day, out of an Etherscan quota that
-// SSP, Zelcore and fusion share.
-const ETHERSCAN_COINS = ['BSC', 'ETH', 'MATIC', 'AVAX', 'BASE'];
+// (one pass, five minutes' sleep, repeat) on every Flux instance.
+//
+// EVM balances come straight from public RPC nodes (config.evmRpcUrls): the
+// native balance via eth_getBalance and the FLUX token via balanceOf, both in
+// one JSON-RPC batch per address. No Etherscan: it costs a key and a quota
+// that SSP and Zelcore share, and its Polygon endpoint hangs on a share of
+// requests.
+const EVM_COINS = ['BSC', 'ETH', 'MATIC', 'AVAX', 'BASE'];
+const EVM_NATIVE_DECIMALS = 18;
+// FLUX is an 8-decimal token on every EVM chain (checked with decimals()).
+const EVM_FLUX_DECIMALS = 8;
 // One endpoint answers both the coin balance and the FLUX token balance.
 const SINGLE_CALL_COINS = ['FLUX', 'ALGO', 'TRON', 'ERGO'];
 
@@ -220,13 +187,12 @@ function envNumber(name, fallback) {
   return Number.isFinite(value) && process.env[name] !== '' ? value : fallback;
 }
 
-// Etherscan's per-second budget is shared with other services; the public
-// Solana RPC rate-limits hard.
-const ETHERSCAN_GAP_MS = envNumber('ETHERSCAN_GAP_MS', 250);
+// Pauses between addresses, per lane. The public Solana RPC rate-limits hard.
+const EVM_GAP_MS = envNumber('EVM_GAP_MS', 100);
 const SOL_GAP_MS = envNumber('SOL_GAP_MS', 1500);
 const OTHER_GAP_MS = envNumber('OTHER_GAP_MS', 300);
-const ETHERSCAN_THROTTLE_RETRIES = 2;
-const ETHERSCAN_THROTTLE_BACKOFF_MS = envNumber('ETHERSCAN_THROTTLE_BACKOFF_MS', 1500);
+// A node that does not answer in this time is skipped for the next one.
+const EVM_RPC_TIMEOUT = envNumber('EVM_RPC_TIMEOUT_MS', 10 * 1000);
 
 // The refresh endpoint is public, so cap what it can spend. Each instance
 // answers a click within REFRESH_MIN_INTERVAL of its last refresh with that
@@ -242,28 +208,74 @@ let lastFailed = 0;
 let currentRefresh = null;
 const manualRefreshStarts = [];
 
-// Error text goes to the public API, so it must never carry a URL (the
-// Etherscan URLs contain the API key). Axios and timeout messages don't.
+// Error text goes to the public API, so keep URLs out of it. Axios and
+// timeout messages don't carry one.
 function shortError(error) {
   const message = (error && error.message) || String(error);
   return message.replace(/https?:\/\/\S+/g, '<url>').slice(0, 160);
 }
 
-async function getEtherscan(url) {
-  for (let attempt = 0; ; attempt += 1) {
-    // eslint-disable-next-line no-await-in-loop
-    const { data } = await withTimeout(axios.get(url));
-    if (data && data.status === '1') {
-      return data;
-    }
-    const message = data && typeof data.result === 'string' ? data.result : (data && data.message) || 'unexpected response';
-    const perSecondThrottle = /rate limit/i.test(message) && !/daily/i.test(message);
-    if (!perSecondThrottle || attempt >= ETHERSCAN_THROTTLE_RETRIES) {
-      throw new Error(`Etherscan: ${message}`);
-    }
-    // eslint-disable-next-line no-await-in-loop
-    await delay(ETHERSCAN_THROTTLE_BACKOFF_MS * (attempt + 1));
+/* global BigInt */
+// Whole-coin amount from a hex integer, without float rounding on the way.
+function fromUnits(hex, decimals) {
+  if (typeof hex !== 'string' || !/^0x[0-9a-f]+$/i.test(hex)) {
+    throw new Error(`unexpected RPC result ${String(hex).slice(0, 20)}`);
   }
+  const value = BigInt(hex);
+  const base = BigInt(10) ** BigInt(decimals);
+  const fraction = (value % base).toString().padStart(decimals, '0');
+  return Number(`${value / base}.${fraction}`);
+}
+
+// Sends one JSON-RPC batch to the chain's nodes in order until one answers
+// every call. Returns the results in request order.
+async function evmRpcBatch(coin, calls) {
+  const urls = (config.evmRpcUrls && config.evmRpcUrls[coin]) || [];
+  if (urls.length === 0) {
+    throw new Error(`No RPC configured for ${coin}`);
+  }
+  const batch = calls.map((call, index) => ({
+    jsonrpc: '2.0', id: index + 1, method: call.method, params: call.params,
+  }));
+  let lastError;
+  // eslint-disable-next-line no-restricted-syntax
+  for (const url of urls) {
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      const { data } = await withTimeout(axios.post(url, batch, {
+        timeout: EVM_RPC_TIMEOUT,
+        headers: { 'Content-Type': 'application/json' },
+      }), EVM_RPC_TIMEOUT);
+      if (!Array.isArray(data)) {
+        throw new Error('RPC did not answer the batch');
+      }
+      const byId = new Map(data.map((entry) => [entry && entry.id, entry]));
+      return batch.map((request) => {
+        const entry = byId.get(request.id);
+        if (!entry || entry.error || entry.result === undefined) {
+          const reason = entry && entry.error && entry.error.message;
+          throw new Error(`RPC ${request.method} failed${reason ? `: ${reason}` : ''}`);
+        }
+        return entry.result;
+      });
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError;
+}
+
+async function getEvmBalances(coin, address) {
+  const token = config.fluxContractAddresses[coin];
+  const owner = address.toLowerCase().replace(/^0x/, '').padStart(64, '0');
+  const [nativeHex, tokenHex] = await evmRpcBatch(coin, [
+    { method: 'eth_getBalance', params: [address, 'latest'] },
+    { method: 'eth_call', params: [{ to: token, data: `0x70a08231${owner}` }, 'latest'] },
+  ]);
+  return {
+    balance: fromUnits(nativeHex, EVM_NATIVE_DECIMALS),
+    tokenBalance: fromUnits(tokenHex, EVM_FLUX_DECIMALS),
+  };
 }
 
 async function getKadenaBalance(pactCode, apiHost) {
@@ -300,14 +312,8 @@ async function fetchItem(item, pause) {
       balance: parseResponse(item, data, false),
     };
   }
-  if (ETHERSCAN_COINS.includes(coin)) {
-    const tokenData = await getEtherscan(buildApiCall(coin, address, true));
-    await pause();
-    const coinData = await getEtherscan(buildApiCall(coin, address, false));
-    return {
-      tokenBalance: parseResponse(item, tokenData, true),
-      balance: parseResponse(item, coinData, false),
-    };
+  if (EVM_COINS.includes(coin)) {
+    return getEvmBalances(coin, address);
   }
   if (coin === 'SOL') {
     const tokenResponse = await withTimeout(axios(buildApiCall(coin, address, true)));
@@ -372,7 +378,7 @@ function snapshot() {
   };
 }
 
-// Etherscan, Solana and the rest run as three concurrent lanes, each paced
+// EVM, Solana and the rest run as three concurrent lanes, each paced
 // for its own upstream.
 function startRefresh({ manual }) {
   const state = {
@@ -397,9 +403,9 @@ function startRefresh({ manual }) {
   }
   log.info(`Refreshing balances (${manual ? 'manual' : 'scheduled'})`);
   state.promise = Promise.all([
-    runLane(addresses.filter((item) => ETHERSCAN_COINS.includes(item.coin)), ETHERSCAN_GAP_MS, onItem),
+    runLane(addresses.filter((item) => EVM_COINS.includes(item.coin)), EVM_GAP_MS, onItem),
     runLane(addresses.filter((item) => item.coin === 'SOL'), SOL_GAP_MS, onItem),
-    runLane(addresses.filter((item) => !ETHERSCAN_COINS.includes(item.coin) && item.coin !== 'SOL'), OTHER_GAP_MS, onItem),
+    runLane(addresses.filter((item) => !EVM_COINS.includes(item.coin) && item.coin !== 'SOL'), OTHER_GAP_MS, onItem),
   ]).then(() => {
     refreshedAt = new Date().toISOString();
     lastFailed = state.failed;

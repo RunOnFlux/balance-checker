@@ -322,7 +322,7 @@ function StatusLine({
   if (refresh.state === 'limited') {
     const { reason, retryInSeconds, limit } = refresh.limited;
     const text = reason === 'hourly-cap'
-      ? `Refresh limit reached (${limit} per hour per server, to protect the shared Etherscan quota). Showing the latest data. Try again in ${formatWait(retryInSeconds)}.`
+      ? `Refresh limit reached (${limit} per hour per server, to go easy on the public balance APIs). Showing the latest data. Try again in ${formatWait(retryInSeconds)}.`
       : `Balances were refreshed less than a minute ago, showing those. Try again in ${formatWait(retryInSeconds)}.`;
     return <p className="status warn">{text}</p>;
   }
